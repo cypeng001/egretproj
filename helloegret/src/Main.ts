@@ -28,6 +28,10 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 class Main extends eui.UILayer {
+
+    private _preload_list: string[] = ["preload", "config"];
+    private _preload_idx = 0;
+
     /**
      * 加载进度界面
      * loading process interface
@@ -77,7 +81,13 @@ class Main extends eui.UILayer {
         RES.addEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR, this.onResourceLoadError, this);
         RES.addEventListener(RES.ResourceEvent.GROUP_PROGRESS, this.onResourceProgress, this);
         RES.addEventListener(RES.ResourceEvent.ITEM_LOAD_ERROR, this.onItemLoadError, this);
-        RES.loadGroup("preload");
+        //RES.loadGroup("preload");
+
+        for(let i = 0; i < this._preload_list.length; i++)
+        {
+            var group = this._preload_list[i];
+            RES.loadGroup(group);
+        }
     }
     private isThemeLoadEnd: boolean = false;
     /**
@@ -94,7 +104,27 @@ class Main extends eui.UILayer {
      * preload resource group is loaded
      */
     private onResourceLoadComplete(event: RES.ResourceEvent): void {
-        if (event.groupName == "preload") {
+        var loaded = false;
+
+        for(let i = 0; i < this._preload_list.length; i++)
+        {
+            var group = this._preload_list[i];
+            if(group == event.groupName)
+            {
+                loaded = true;
+                break;
+            }
+        }
+
+        if(!loaded)
+        {
+            console.error("onResourceLoadComplete invalid groupName", event.groupName);
+            return;
+        }
+
+        this._preload_idx++;
+
+        if (this._preload_idx == this._preload_list.length) {
             this.stage.removeChild(this.loadingView);
             RES.removeEventListener(RES.ResourceEvent.GROUP_COMPLETE, this.onResourceLoadComplete, this);
             RES.removeEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR, this.onResourceLoadError, this);
@@ -202,6 +232,8 @@ class Main extends eui.UILayer {
         button.verticalCenter = 0;
         this.addChild(button);
         button.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonClick, this);
+
+        this.testJSZip();
     }
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
@@ -253,5 +285,16 @@ class Main extends eui.UILayer {
         panel.horizontalCenter = 0;
         panel.verticalCenter = 0;
         this.addChild(panel);
+    }
+
+    private testJSZip(): void {
+        var data = RES.getRes("zip_config_zip");
+        var zip = new JSZip(data);
+
+        var item_str = zip.file("item.json").asText();
+        var npc_str = zip.file("npc.json").asText();
+
+        console.log("item_str:", item_str);
+        console.log("npc_str:", npc_str);
     }
 }

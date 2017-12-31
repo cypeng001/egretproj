@@ -6,7 +6,8 @@
 		"libs/modules/res/res.js",
 		"libs/modules/tween/tween.js",
 		"libs/modules/game/game.js",
-		"promise/bin/promise.js"
+		"promise/bin/promise.js",
+		"external/jszip/jszip.js"
 	],
 	"game": [
 		"bin-debug/AssetAdapter.js",
