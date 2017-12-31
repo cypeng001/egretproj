@@ -234,6 +234,7 @@ class Main extends eui.UILayer {
         button.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonClick, this);
 
         this.testJSZip();
+        this.testMD5();
     }
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
@@ -294,7 +295,12 @@ class Main extends eui.UILayer {
         var item_str = zip.file("item.json").asText();
         var npc_str = zip.file("npc.json").asText();
 
-        console.log("item_str:", item_str);
-        console.log("npc_str:", npc_str);
+        console.log("testJSZip item_str:", item_str);
+        console.log("testJSZip npc_str:", npc_str);
+    }
+
+    private testMD5(): void {
+        var md5_str:string = new md5().hex_md5("HelloMD5");
+        console.log("testMD5 HelloMD5 md5_str:", md5_str);
     }
 }

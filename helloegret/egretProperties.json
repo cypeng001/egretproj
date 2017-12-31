@@ -41,6 +41,10 @@
     {
       "name": "jszip",
       "path": "./external/jszip"
+    },
+    {
+      "name": "md5",
+      "path": "./external/md5"
     }
   ]
 }
