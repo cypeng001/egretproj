@@ -45,6 +45,10 @@
     {
       "name": "md5",
       "path": "./external/md5"
+    },
+    {
+      "name": "mylib",
+      "path": "./gamelibs/mylib"
     }
   ]
 }

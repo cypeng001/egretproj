@@ -8,7 +8,8 @@
 		"libs/modules/game/game.js",
 		"promise/bin/promise.js",
 		"external/jszip/jszip.js",
-		"external/md5/md5.js"
+		"external/md5/md5.js",
+		"gamelibs/mylib/mylib.js"
 	],
 	"game": [
 		"bin-debug/AssetAdapter.js",

@@ -235,6 +235,7 @@ class Main extends eui.UILayer {
 
         this.testJSZip();
         this.testMD5();
+        this.testMyLib();
     }
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
@@ -302,5 +303,10 @@ class Main extends eui.UILayer {
     private testMD5(): void {
         var md5_str:string = new md5().hex_md5("HelloMD5");
         console.log("testMD5 HelloMD5 md5_str:", md5_str);
+    }
+
+    private testMyLib(): void {
+        var md5_str:string = new MyLib().hex_md5("HelloMD5");
+        console.log("testMyLib HelloMD5 md5_str:", md5_str);
     }
 }
