@@ -5,7 +5,18 @@ var MyLib = (function () {
     function MyLib() {
         this.hexcase = 0; /* hex output format. 0 - lowercase; 1 - uppercase        */
         this.b64pad = ""; /* base-64 pad character. "=" for strict RFC compliance   */
+        this.testVal = 0;
     }
+    MyLib.prototype.setTestVal = function (val) {
+        this.testVal = val;
+    };
+    MyLib.prototype.getTestVal = function () {
+        return this.testVal;
+    };
+    MyLib.prototype.testAdd = function (n1, n2) {
+        var ret = n1 + n2;
+        return ret;
+    };
     /*
      * These are the privates you'll usually want to call
      * They take string arguments and return either hex or base-64 encoded strings

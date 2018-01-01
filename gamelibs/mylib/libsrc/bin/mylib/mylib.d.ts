@@ -2,6 +2,10 @@ declare class MyLib {
     constructor();
     private hexcase;
     private b64pad;
+    private testVal;
+    setTestVal(val: number): void;
+    getTestVal(): number;
+    testAdd(n1: number, n2: number): number;
     hex_md5(s: any): string;
     private b64_md5(s);
     private any_md5(s, e);

@@ -4,7 +4,20 @@ class MyLib{
     }
     private hexcase = 0;   /* hex output format. 0 - lowercase; 1 - uppercase        */
     private b64pad  = "";  /* base-64 pad character. "=" for strict RFC compliance   */
+    private testVal = 0;
 
+    public setTestVal(val: number): void {
+        this.testVal = val;
+    }
+
+    public getTestVal(): number {
+        return this.testVal;
+    }
+
+    public testAdd(n1: number, n2: number): number {
+        var ret = n1 + n2;
+        return ret;
+    }
     /*
      * These are the privates you'll usually want to call
      * They take string arguments and return either hex or base-64 encoded strings
