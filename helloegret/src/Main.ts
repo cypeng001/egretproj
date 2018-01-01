@@ -306,7 +306,13 @@ class Main extends eui.UILayer {
     }
 
     private testMyLib(): void {
-        var md5_str:string = new MyLib().hex_md5("HelloMD5");
+        var my_lib = new MyLib();
+        var md5_str:string = my_lib.hex_md5("HelloMD5");
         console.log("testMyLib HelloMD5 md5_str:", md5_str);
+        var ret = my_lib.testAdd(1, 2);
+        console.log("testMyLib my_lib.testAdd ret:", ret);
+        my_lib.setTestVal(100);
+        var testVal = my_lib.getTestVal();
+        console.log("testMyLib my_lib.getTestVal ret:", testVal);
     }
 }
