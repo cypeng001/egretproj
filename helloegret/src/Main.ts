@@ -236,6 +236,7 @@ class Main extends eui.UILayer {
         this.testJSZip();
         this.testMD5();
         this.testMyLib();
+        this.testMyComboBox();
     }
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
@@ -314,5 +315,43 @@ class Main extends eui.UILayer {
         my_lib.setTestVal(100);
         var testVal = my_lib.getTestVal();
         console.log("testMyLib my_lib.getTestVal ret:", testVal);
+    }
+
+    private cb_data:any[] = [];
+    private cb:MyComboBox;
+    protected testMyComboBox(): void {
+        //初始化数据
+        this.cb_data.push({bg:"resource/ui/combobox/itemBg1.png",content:"https://www.baidu.com/"});
+        this.cb_data.push({bg:"resource/ui/combobox/itemBg2.png",content:"https://www.egret.com/"});
+        this.cb_data.push({bg:"resource/ui/combobox/itemBg3.png",content:"https://www.360.com/"});
+        this.cb_data.push({bg:"resource/ui/combobox/itemBg4.png",content:"https://www.baidu.com/"});
+        
+        this.cb = new MyComboBox(this.cb_data);
+        this.addChild(this.cb);
+        //1.点击事件
+        this.cb.addEventListener(MyComboBox.onClick,this.onMyComboBoxClick,this);
+        //2.设置title
+        this.cb.setTitleHeight(this.stage.stageWidth/5);
+        this.cb.setTitleBackground("resource/ui/combobox/titleBackground.png");
+        this.cb.setTitleFontSize(40);
+        //3.设置Item
+        this.cb.setItemWidth(this.stage.stageWidth);
+        this.cb.setItemHeight(80);
+        this.cb.setItemFontSize(30);
+        //4.设置Item内容文字的对齐方式
+        this.cb.setItemTextAlign("left");
+        //5.展开和收起
+        //this.cb.show();
+        //this.cb.hide();
+        
+    }
+    
+    private onMyComboBoxClick(event){
+        //getTitleLabe()方法可以获取titleLabel控件。
+        var titleLabel = this.cb.getTitleLabe();
+        titleLabel.text = this.cb_data[event.data.itemIndex].content;
+
+        this.cb.hide();
+        console.log(event.data);
     }
 }
