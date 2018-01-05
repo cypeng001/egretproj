@@ -53,6 +53,10 @@
     {
       "name": "mycombobox",
       "path": "./gamelibs/mycombobox"
+    },
+    {
+      "name": "mytogglepanel",
+      "path": "./gamelibs/mytogglepanel"
     }
   ]
 }

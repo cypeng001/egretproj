@@ -10,13 +10,13 @@
 		"external/jszip/jszip.js",
 		"external/md5/md5.js",
 		"gamelibs/mylib/mylib.js",
-		"gamelibs/mycombobox/mycombobox.js"
+		"gamelibs/mycombobox/mycombobox.js",
+		"gamelibs/mytogglepanel/mytogglepanel.js"
 	],
 	"game": [
 		"bin-debug/AssetAdapter.js",
 		"bin-debug/LoadingUI.js",
 		"bin-debug/Main.js",
-		"bin-debug/MyTogglePanel.js",
 		"bin-debug/ThemeAdapter.js"
 	]
 }
