@@ -1,0 +1,12 @@
+{
+	"compilerOptions": {
+		"target": "es5",
+		"outFile": "bin/mytogglepanel/mytogglepanel.js",
+		"declaration": true
+	},
+	"files": [
+		"libs/egret.d.ts",
+		"libs/eui.d.ts",
+		"src/MyTogglePanel.ts"
+	]
+}
