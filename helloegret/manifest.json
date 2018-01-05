@@ -16,6 +16,7 @@
 		"bin-debug/AssetAdapter.js",
 		"bin-debug/LoadingUI.js",
 		"bin-debug/Main.js",
+		"bin-debug/MyTogglePanel.js",
 		"bin-debug/ThemeAdapter.js"
 	]
 }

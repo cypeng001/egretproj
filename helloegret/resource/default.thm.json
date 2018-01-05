@@ -14,7 +14,8 @@
     "eui.VSlider": "resource/eui_skins/VSliderSkin.exml",
     "eui.ItemRenderer": "resource/eui_skins/ItemRendererSkin.exml",
     "myCombobox": "resource/eui_skins/combobox.exml",
-    "myComboboxItem": "resource/eui_skins/comboboxItem.exml"
+    "myComboboxItem": "resource/eui_skins/comboboxItem.exml",
+    "MyTogglePanel": "resource/eui_skins/MyTogglePanel.exml"
   },
   "autoGenerateExmlsList": true,
   "exmls": [
@@ -23,6 +24,7 @@
     "resource/eui_skins/HScrollBarSkin.exml",
     "resource/eui_skins/HSliderSkin.exml",
     "resource/eui_skins/ItemRendererSkin.exml",
+    "resource/eui_skins/MyTogglePanel.exml",
     "resource/eui_skins/PanelSkin.exml",
     "resource/eui_skins/ProgressBarSkin.exml",
     "resource/eui_skins/RadioButtonSkin.exml",
