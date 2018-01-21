@@ -32,6 +32,18 @@
     },
     {
       "name": "promise"
+    },
+    {
+      "name": "jszip",
+      "path": "../external/jszip"
+    },
+    {
+      "name": "md5",
+      "path": "../external/md5"
+    },
+    {
+      "name": "PomeloClient",
+      "path": "../external/PomeloClient"
     }
   ]
 }
