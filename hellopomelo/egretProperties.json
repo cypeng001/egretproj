@@ -35,15 +35,15 @@
     },
     {
       "name": "jszip",
-      "path": "../external/jszip"
+      "path": "../gamelibs/bin/jszip"
     },
     {
       "name": "md5",
-      "path": "../external/md5"
+      "path": "../gamelibs/bin/md5"
     },
     {
       "name": "PomeloClient",
-      "path": "../external/PomeloClient"
+      "path": "../gamelibs/bin/PomeloClient"
     }
   ]
 }
