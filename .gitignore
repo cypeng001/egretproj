@@ -2,3 +2,6 @@ helloegret/bin-debug/*
 helloegret/bin-release/*
 helloegret/libs/*
 helloegret/.wing/*
+helloepomelo/bin-debug/*
+helloepomelo/bin-release/*
+helloepomelo/.wing/*
