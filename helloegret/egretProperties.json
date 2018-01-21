@@ -40,27 +40,27 @@
     },
     {
       "name": "jszip",
-      "path": "./external/jszip"
+      "path": "../gamelibs/bin/jszip"
     },
     {
       "name": "md5",
-      "path": "./external/md5"
+      "path": "../gamelibs/bin/md5"
     },
     {
       "name": "PomeloClient",
-      "path": "./external/PomeloClient"
+      "path": "../gamelibs/bin/PomeloClient"
     },
     {
       "name": "mylib",
-      "path": "./gamelibs/mylib"
+      "path": "../gamelibs/bin/mylib"
     },
     {
       "name": "mycombobox",
-      "path": "./gamelibs/mycombobox"
+      "path": "../gamelibs/bin/mycombobox"
     },
     {
       "name": "mytogglepanel",
-      "path": "./gamelibs/mytogglepanel"
+      "path": "../gamelibs/bin/mytogglepanel"
     }
   ]
 }

@@ -7,12 +7,12 @@
 		"libs/modules/tween/tween.js",
 		"libs/modules/game/game.js",
 		"promise/bin/promise.js",
-		"external/jszip/jszip.js",
-		"external/md5/md5.js",
-		"external/PomeloClient/PomeloClient.js",
-		"gamelibs/mylib/mylib.js",
-		"gamelibs/mycombobox/mycombobox.js",
-		"gamelibs/mytogglepanel/mytogglepanel.js"
+		"libs/modules/jszip/jszip.js",
+		"libs/modules/md5/md5.js",
+		"libs/modules/PomeloClient/PomeloClient.js",
+		"libs/modules/mylib/mylib.js",
+		"libs/modules/mycombobox/mycombobox.js",
+		"libs/modules/mytogglepanel/mytogglepanel.js"
 	],
 	"game": [
 		"bin-debug/AssetAdapter.js",
