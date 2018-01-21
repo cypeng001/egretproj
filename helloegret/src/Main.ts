@@ -239,7 +239,8 @@ class Main extends eui.UILayer {
         //this.testMyComboBox();
         //this.testMyTogglePanel();
         //this.testPomelo();
-        this.testPhp();
+        //this.testPhp();
+        this.testLordOfPomelo();
     }
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
@@ -392,5 +393,112 @@ class Main extends eui.UILayer {
                 console.log("testPhp error event:", event);
             },
             this);
+    }
+
+    private static LOP_CONFIG: any = {
+        WEB_SERVER_URL: "http://localhost:3001/",
+
+        GATE_HOST: "127.0.0.1",
+        GATE_PORT: 3014,
+    }
+
+    private _pomelo:Pomelo = new Pomelo();
+    public get pomelo(): Pomelo {
+        return this._pomelo;
+    }
+
+    private testLordOfPomelo(): void {
+        this.login("cypeng001", "123456");
+    }
+
+    private login(username: string, pwd: string): void {
+        PhpUtil.post(Main.LOP_CONFIG.WEB_SERVER_URL + "login", {username: username, password: pwd}, 
+            (data) => {
+                console.log("testPhp data:", data);
+
+                if (data.code === 501) {
+                    console.error('Username or password is invalid!');
+                    return;
+                }
+
+                if (data.code !== 200) {
+                    console.error('Username is not exists!');
+                    return;
+                }
+
+                this.authEntry(data.uid, data.token, function() {
+                    console.log("authEntry callback");
+                });
+
+            },
+            (event) => {
+                console.log("testPhp error event:", event);
+            },
+            this);
+    }
+
+    private authEntry(uid: string, token: string, callback: Function) {
+        var self = this;
+        self.queryEntry(uid, function(host, port) {
+            self.entry(host, port, token, callback);
+        });
+    }
+
+    private queryEntry(uid: string, callback: Function) {
+        var self = this;
+	
+        self.pomelo.init({host: Main.LOP_CONFIG.GATE_HOST, port: Main.LOP_CONFIG.GATE_PORT, log: true}, function() {
+		    console.log("pomelo.init finish");
+
+		    console.log("gate.gateHandler.queryEntry");
+
+            self.pomelo.request('gate.gateHandler.queryEntry', { uid: uid}, function(data) {
+			    console.log("gate.gateHandler.queryEntry cb data:", data);
+
+                self.pomelo.disconnect();
+
+                if(data.code === 2001) {
+                    alert('Servers error!');
+                    return;
+                }
+
+                callback(data.host, data.port);
+            });
+        });
+    }
+
+    private entry(host: string, port: number, token: string, callback: Function): void {
+		console.log("entry");
+
+        var self = this;
+
+	    console.log("pomelo.init start", {host: host, port: port, log: true});
+        self.pomelo.init({host: host, port: port, log: true}, function() {
+		    console.log("pomelo.init finish");
+
+		    console.log("connector.entryHandler.entry");
+
+            self.pomelo.request('connector.entryHandler.entry', {token: token}, function(data) {
+			    console.log("connector.entryHandler.entry cb data:", data);
+                var player = data.player;
+
+                if (callback) {
+                    callback(data.code);
+                }
+
+                if (data.code == 1001) {
+                    alert('Login fail!');
+                    return;
+                } else if (data.code == 1003) {
+                    alert('Username not exists!');
+                    return;
+                }
+
+                if (data.code != 200) {
+                    alert('Login Fail!');
+                    return;
+                }
+            });
+        });
     }
 }
