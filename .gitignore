@@ -1,2 +1,4 @@
 helloegret/bin-debug/*
 helloegret/bin-release/*
+helloegret/libs/*
+helloegret/.wing/*

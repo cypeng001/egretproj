@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="MyTogglePanelSkin" width="161" height="157" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" >
+	<w:Config id="160c46a0284" ></w:Config>
+	<e:Button id="btn" label="Sel" x="0" y="0" anchorOffsetX="0" width="160" anchorOffsetY="0" height="115"/>
+	<e:Image id="displayImg" width="61" height="40" x="0" y="115" anchorOffsetX="0" anchorOffsetY="0" source="checkbox_select_down_png"/>
+	<e:Label id="displayLabel" text="Sel" y="120" textColor="0x00b2ff" anchorOffsetX="0" width="72" verticalAlign="middle" textAlign="center" right="0"/>
+</e:Skin>

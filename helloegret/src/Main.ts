@@ -233,10 +233,11 @@ class Main extends eui.UILayer {
         this.addChild(button);
         button.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonClick, this);
 
-        this.testJSZip();
-        this.testMD5();
-        this.testMyLib();
-        this.testMyComboBox();
+        //this.testJSZip();
+        //this.testMD5();
+        //this.testMyLib();
+        //this.testMyComboBox();
+        this.testMyTogglePanel();
     }
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
@@ -353,5 +354,10 @@ class Main extends eui.UILayer {
 
         this.cb.hide();
         console.log(event.data);
+    }
+
+    private testMyTogglePanel(): void {
+        var btn = new MyTogglePanel();
+        this.addChild(btn);
     }
 }

@@ -10,7 +10,8 @@
 		"external/jszip/jszip.js",
 		"external/md5/md5.js",
 		"gamelibs/mylib/mylib.js",
-		"gamelibs/mycombobox/mycombobox.js"
+		"gamelibs/mycombobox/mycombobox.js",
+		"gamelibs/mytogglepanel/mytogglepanel.js"
 	],
 	"game": [
 		"bin-debug/AssetAdapter.js",
