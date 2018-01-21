@@ -47,6 +47,10 @@
       "path": "./external/md5"
     },
     {
+      "name": "PomeloClient",
+      "path": "./external/PomeloClient"
+    },
+    {
       "name": "mylib",
       "path": "./gamelibs/mylib"
     },

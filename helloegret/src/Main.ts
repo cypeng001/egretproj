@@ -237,7 +237,9 @@ class Main extends eui.UILayer {
         //this.testMD5();
         //this.testMyLib();
         //this.testMyComboBox();
-        this.testMyTogglePanel();
+        //this.testMyTogglePanel();
+
+        this.testPomelo();
     }
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
@@ -359,5 +361,25 @@ class Main extends eui.UILayer {
     private testMyTogglePanel(): void {
         var btn = new MyTogglePanel();
         this.addChild(btn);
+    }
+
+    private testPomelo(): void {
+        var pomelo:Pomelo = new Pomelo();
+
+        pomelo.on('io-error', function(e:any):void {
+            console.error('testPomelo io-error');
+        });
+
+        pomelo.on('close', function(e:any):void {
+            console.warn('testPomelo close');
+        });
+
+        pomelo.init({
+            host: '127.0.0.1',
+            port: '3010'
+        }, function(response:any):void {
+            if (response.code === 200) {
+            }
+        });
     }
 }

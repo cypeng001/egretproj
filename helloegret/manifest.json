@@ -11,7 +11,8 @@
 		"external/md5/md5.js",
 		"gamelibs/mylib/mylib.js",
 		"gamelibs/mycombobox/mycombobox.js",
-		"gamelibs/mytogglepanel/mytogglepanel.js"
+		"gamelibs/mytogglepanel/mytogglepanel.js",
+		"gamelibs/PomeloClient/PomeloClient.js"
 	],
 	"game": [
 		"bin-debug/AssetAdapter.js",
