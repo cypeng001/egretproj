@@ -9,15 +9,16 @@
 		"promise/bin/promise.js",
 		"external/jszip/jszip.js",
 		"external/md5/md5.js",
+		"external/PomeloClient/PomeloClient.js",
 		"gamelibs/mylib/mylib.js",
 		"gamelibs/mycombobox/mycombobox.js",
-		"gamelibs/mytogglepanel/mytogglepanel.js",
-		"gamelibs/PomeloClient/PomeloClient.js"
+		"gamelibs/mytogglepanel/mytogglepanel.js"
 	],
 	"game": [
 		"bin-debug/AssetAdapter.js",
 		"bin-debug/LoadingUI.js",
 		"bin-debug/Main.js",
-		"bin-debug/ThemeAdapter.js"
+		"bin-debug/ThemeAdapter.js",
+		"bin-debug/utils/PhpUtil.js"
 	]
 }
