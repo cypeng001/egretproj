@@ -240,7 +240,8 @@ class Main extends eui.UILayer {
         //this.testMyTogglePanel();
         //this.testPomelo();
         //this.testPhp();
-        this.testLordOfPomelo();
+        //this.testLordOfPomelo();
+        this.testBezier();
     }
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
@@ -500,5 +501,13 @@ class Main extends eui.UILayer {
                 }
             });
         });
+    }
+
+    private testBezier(): void {
+        var bezierSpline = new BezierSpline();
+        //bezierSpline.init([100, 500, 300, 0, 500, 300]);
+        bezierSpline.init([500, 300, 300, 0, 100, 500]);
+        bezierSpline.refresh();
+        this.addChild(bezierSpline);
     }
 }

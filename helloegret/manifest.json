@@ -16,9 +16,12 @@
 	],
 	"game": [
 		"bin-debug/AssetAdapter.js",
+		"bin-debug/BezierSpline.js",
 		"bin-debug/LoadingUI.js",
 		"bin-debug/Main.js",
 		"bin-debug/ThemeAdapter.js",
-		"bin-debug/utils/PhpUtil.js"
+		"bin-debug/utils/MathUtil.js",
+		"bin-debug/utils/PhpUtil.js",
+		"bin-debug/utils/VectorUtil.js"
 	]
 }
