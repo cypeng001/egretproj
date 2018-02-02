@@ -7041,7 +7041,7 @@ var egret;
             var tempList = BitmapData._displayList[hashCode];
             var index = tempList.indexOf(displayObject);
             if (index >= 0) {
-                tempList.splice(index);
+                tempList.splice(index, 1);
             }
         };
         BitmapData.$invalidate = function (bitmapData) {
@@ -7107,6 +7107,17 @@ var egret;
                 egret_native.NativeDisplayObject.disposeBitmapData(bitmapData);
             }
             delete BitmapData._displayList[hashCode];
+        };
+        //add by chenyingpeng
+        BitmapData.$getUnusedList = function () {
+            var ret = [];
+            for (var hashCode in BitmapData._displayList) {
+                var tempList = BitmapData._displayList[hashCode];
+                if (tempList.length == 0) {
+                    ret.push(parseInt(hashCode));
+                }
+            }
+            return ret;
         };
         BitmapData._displayList = egret.createMap();
         return BitmapData;

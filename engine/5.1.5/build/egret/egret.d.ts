@@ -4185,6 +4185,7 @@ declare namespace egret {
         static $removeDisplayObject(displayObject: DisplayObject, bitmapData: BitmapData): void;
         static $invalidate(bitmapData: BitmapData): void;
         static $dispose(bitmapData: BitmapData): void;
+        static $getUnusedList(): Array<number>;
     }
 }
 declare namespace egret {

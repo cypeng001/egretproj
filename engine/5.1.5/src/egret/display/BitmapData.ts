@@ -246,7 +246,7 @@ namespace egret {
             let tempList: Array<DisplayObject> = BitmapData._displayList[hashCode];
             let index: number = tempList.indexOf(displayObject);
             if (index >= 0) {
-                tempList.splice(index);
+                tempList.splice(index, 1);
             }
         }
 
@@ -313,6 +313,18 @@ namespace egret {
                 egret_native.NativeDisplayObject.disposeBitmapData(bitmapData);
             }
             delete BitmapData._displayList[hashCode];
+        }
+
+        //add by chenyingpeng
+        static $getUnusedList(): Array<number> {
+            let ret: Array<number> = [];
+            for (let hashCode in BitmapData._displayList) {
+                let tempList = BitmapData._displayList[hashCode];
+                if (tempList.length == 0) {
+                    ret.push(parseInt(hashCode));
+                }
+            }
+            return ret;
         }
     }
 }
