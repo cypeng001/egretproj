@@ -623,6 +623,12 @@ module RES {
                 }
             }
             return queue.loadResource(r).then(value => {
+
+                // add by chenyingpeng
+                if(r) {
+                    host.save(r, value);
+                }
+
                 if (compFunc && r) {
                     compFunc.call(thisObject, value, r.url);
                 }

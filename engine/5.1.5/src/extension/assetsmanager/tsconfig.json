@@ -9,6 +9,7 @@
         "experimentalDecorators": true,
         "strictNullChecks": true,
         "sourceMap": false,
+	"newLine": "LF",
         "lib": [
             "es5",
             "dom",

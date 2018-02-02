@@ -2589,6 +2589,10 @@ var RES;
                 }
             }
             return RES.queue.loadResource(r).then(function (value) {
+                // add by chenyingpeng
+                if (r) {
+                    RES.host.save(r, value);
+                }
                 if (compFunc && r) {
                     compFunc.call(thisObject, value, r.url);
                 }
