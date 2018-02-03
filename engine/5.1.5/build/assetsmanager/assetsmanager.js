@@ -1082,6 +1082,7 @@ var RES;
                                 return [4 /*yield*/, host.load(r)];
                             case 2:
                                 texture = _a.sent();
+                                host.save(r, texture); //add by chenyingpeng
                                 frames = data.frames;
                                 spriteSheet = new egret.SpriteSheet(texture);
                                 spriteSheet["$resourceInfo"] = r;
@@ -1098,7 +1099,7 @@ var RES;
                                     //     }
                                 }
                                 // todo refactor
-                                host.save(r, texture);
+                                //host.save(r, texture);    //del by chenyingpeng
                                 return [2 /*return*/, spriteSheet];
                         }
                     });

@@ -207,6 +207,7 @@ module RES.processor {
                 r = { name: imagePath, url: imagePath, extra: true, type: 'image' };
             }
             var texture: egret.Texture = await host.load(r);
+            host.save(r, texture);    //add by chenyingpeng
             var frames: any = data.frames;
             var spriteSheet = new egret.SpriteSheet(texture);
             spriteSheet["$resourceInfo"] = r;
@@ -223,7 +224,7 @@ module RES.processor {
                 //     }
             }
             // todo refactor
-            host.save(r, texture);
+            //host.save(r, texture);    //del by chenyingpeng
             return spriteSheet;
         },
 
