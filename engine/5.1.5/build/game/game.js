@@ -700,6 +700,7 @@ var egret;
          *
          * @param value
          */
+        //private setTexture(value:Texture):void {  //edit by chenyingpeng
         MovieClipDataFactory.prototype.setTexture = function (value) {
             this.$spriteSheet = value ? new egret.SpriteSheet(value) : null;
         };

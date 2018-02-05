@@ -391,7 +391,7 @@ declare namespace egret {
          *
          * @param value
          */
-        private setTexture(value);
+        protected setTexture(value: Texture): void;
     }
 }
 declare namespace egret {

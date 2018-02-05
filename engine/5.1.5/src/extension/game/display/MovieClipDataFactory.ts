@@ -169,7 +169,8 @@ namespace egret {
          *
          * @param value
          */
-        private setTexture(value:Texture):void {
+        //private setTexture(value:Texture):void {  //edit by chenyingpeng
+        protected setTexture(value:Texture):void {
             this.$spriteSheet = value ? new SpriteSheet(value) : null;
         }
     }
