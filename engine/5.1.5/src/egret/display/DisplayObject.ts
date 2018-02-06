@@ -444,7 +444,8 @@ namespace egret {
          * @private
          * 设置x坐标
          */
-        $setX(value: number): boolean {
+        //$setX(value: number): boolean {   //edit by chenyingpeng
+        protected $setX(value: number): boolean {
             let self = this;
             if (self.$x == value) {
                 return false;
@@ -511,7 +512,8 @@ namespace egret {
          * @private
          * 设置y坐标
          */
-        $setY(value: number): boolean {
+        //$setY(value: number): boolean {   //edit by chenyingpeng
+        protected $setY(value: number): boolean {
             let self = this;
             if (self.$y == value) {
                 return false;
@@ -2203,6 +2205,45 @@ namespace egret {
                 parent = parent.$parent;
             }
             return false;
+        }
+
+        $zorder: number = 0;    //add by chenyingpeng
+
+        public get zorder(): number {
+            return this.$getZOrder();
+        }
+
+        /**
+         * @protected
+         * 获取ZOrder深度值
+         * add by chenyingpeng
+         */
+        $getZOrder(): number {
+            return this.$zorder;
+        }
+
+        public set zorder(value: number) {
+            this.$setZOrder(value);
+        }
+
+        /**
+         * @protected
+         * 设置ZOrder深度值
+         * add by chenyingpeng
+         */
+        protected $setZOrder(value: number): boolean {
+            let self = this;
+            if (self.$zorder == value) {
+                return false;
+            }
+            self.$zorder = value;
+
+            let p = self.$parent;
+            if (p) {
+                p.sortChildrenDirty();
+            }
+
+            return true;
         }
 
     }

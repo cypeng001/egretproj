@@ -596,6 +596,7 @@ var egret;
             _this.$renderNode = null;
             _this.$renderDirty = false;
             _this.$renderMode = null;
+            _this.$zorder = 0; //add by chenyingpeng
             if (egret.nativeRender) {
                 _this.createNativeDisplayObject();
             }
@@ -874,6 +875,7 @@ var egret;
          * @private
          * 设置x坐标
          */
+        //$setX(value: number): boolean {   //edit by chenyingpeng
         DisplayObject.prototype.$setX = function (value) {
             var self = this;
             if (self.$x == value) {
@@ -939,6 +941,7 @@ var egret;
          * @private
          * 设置y坐标
          */
+        //$setY(value: number): boolean {   //edit by chenyingpeng
         DisplayObject.prototype.$setY = function (value) {
             var self = this;
             if (self.$y == value) {
@@ -2505,6 +2508,41 @@ var egret;
             }
             return false;
         };
+        Object.defineProperty(DisplayObject.prototype, "zorder", {
+            get: function () {
+                return this.$getZOrder();
+            },
+            set: function (value) {
+                this.$setZOrder(value);
+            },
+            enumerable: true,
+            configurable: true
+        });
+        /**
+         * @protected
+         * 获取ZOrder深度值
+         * add by chenyingpeng
+         */
+        DisplayObject.prototype.$getZOrder = function () {
+            return this.$zorder;
+        };
+        /**
+         * @protected
+         * 设置ZOrder深度值
+         * add by chenyingpeng
+         */
+        DisplayObject.prototype.$setZOrder = function (value) {
+            var self = this;
+            if (self.$zorder == value) {
+                return false;
+            }
+            self.$zorder = value;
+            var p = self.$parent;
+            if (p) {
+                p.sortChildrenDirty();
+            }
+            return true;
+        };
         /**
          * @private
          * The default touchEnabled property of DisplayObject
@@ -2687,6 +2725,12 @@ var egret;
         function DisplayObjectContainer() {
             var _this = _super.call(this) || this;
             _this.$touchChildren = true;
+            /**
+             * @private
+             * ZOrder深度值排序标志
+             * add by chenyingpeng
+             */
+            _this.$sortChildrenDirty = false;
             _this.$children = [];
             return _this;
         }
@@ -3407,6 +3451,43 @@ var egret;
                 return this;
             }
             return _super.prototype.$hitTest.call(this, stageX, stageY);
+        };
+        /**
+         * @public
+         * 设置ZOrder深度值排序标志
+         * add by chenyingpeng
+         */
+        DisplayObjectContainer.prototype.sortChildrenDirty = function () {
+            var _this = this;
+            if (this.$sortChildrenDirty) {
+                return;
+            }
+            this.$sortChildrenDirty = true;
+            egret.callLater(function () {
+                _this.sortChildren();
+            }, this);
+        };
+        /**
+         * @protected
+         * 根据ZOrder深度值排序
+         * add by chenyingpeng
+         */
+        DisplayObjectContainer.prototype.sortChildren = function () {
+            if (!this.$sortChildrenDirty) {
+                return;
+            }
+            this.$sortChildrenDirty = false;
+            this.$children.sort(function (c1, c2) {
+                var z1 = c1.zorder;
+                var z2 = c2.zorder;
+                if (z1 > z2) {
+                    return 1;
+                }
+                else if (z1 < z2) {
+                    return -1;
+                }
+                return 0;
+            });
         };
         /**
          * @private

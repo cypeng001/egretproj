@@ -504,7 +504,7 @@ declare namespace egret {
          * @private
          * 设置x坐标
          */
-        $setX(value: number): boolean;
+        protected $setX(value: number): boolean;
         $y: number;
         /**
          * Indicates the y coordinate of the DisplayObject instance relative to the local coordinates of the parent
@@ -537,7 +537,7 @@ declare namespace egret {
          * @private
          * 设置y坐标
          */
-        $setY(value: number): boolean;
+        protected $setY(value: number): boolean;
         private $scaleX;
         /**
          * Indicates the horizontal scale (percentage) of the object as applied from the registration point. <br/>
@@ -1240,6 +1240,20 @@ declare namespace egret {
          * @platform Web,Native
          */
         willTrigger(type: string): boolean;
+        $zorder: number;
+        zorder: number;
+        /**
+         * @protected
+         * 获取ZOrder深度值
+         * add by chenyingpeng
+         */
+        $getZOrder(): number;
+        /**
+         * @protected
+         * 设置ZOrder深度值
+         * add by chenyingpeng
+         */
+        protected $setZOrder(value: number): boolean;
     }
 }
 declare namespace egret {
@@ -1668,6 +1682,24 @@ declare namespace egret {
          * @private
          */
         $hitTest(stageX: number, stageY: number): DisplayObject;
+        /**
+         * @private
+         * ZOrder深度值排序标志
+         * add by chenyingpeng
+         */
+        $sortChildrenDirty: boolean;
+        /**
+         * @public
+         * 设置ZOrder深度值排序标志
+         * add by chenyingpeng
+         */
+        sortChildrenDirty(): void;
+        /**
+         * @protected
+         * 根据ZOrder深度值排序
+         * add by chenyingpeng
+         */
+        protected sortChildren(): void;
     }
 }
 declare namespace egret {

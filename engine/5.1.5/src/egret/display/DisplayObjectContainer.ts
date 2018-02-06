@@ -818,5 +818,52 @@ namespace egret {
             }
             return super.$hitTest(stageX, stageY);
         }
+
+        /**
+         * @private
+         * ZOrder深度值排序标志
+         * add by chenyingpeng
+         */
+        $sortChildrenDirty: boolean = false;
+
+        /**
+         * @public
+         * 设置ZOrder深度值排序标志
+         * add by chenyingpeng
+         */
+        public sortChildrenDirty(): void {
+            if(this.$sortChildrenDirty) {
+                return;
+            }
+            this.$sortChildrenDirty = true;
+
+            egret.callLater(() => {
+                this.sortChildren();
+            }, this);
+        }
+
+        /**
+         * @protected
+         * 根据ZOrder深度值排序
+         * add by chenyingpeng
+         */
+        protected sortChildren(): void {
+            if(!this.$sortChildrenDirty) {
+                return;
+            }
+            this.$sortChildrenDirty = false;
+
+            this.$children.sort(function(c1, c2) {
+                var z1 = c1.zorder;
+                var z2 = c2.zorder;
+                if(z1 > z2) {
+                    return 1;
+                }
+                else if(z1 < z2) {
+                    return -1;
+                }
+                return 0;
+            });
+        }
     }
 }
