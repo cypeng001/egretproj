@@ -332,6 +332,36 @@ namespace egret {
         }
 
         /**
+         * add by chenyingpeng
+         * @public
+         * 根据帧标签，返回帧数
+         * @param labelName {string} 帧标签名
+         */
+        public getFrameCount(labelName: string): number {
+            let frameLabels = this.frameLabels;
+            if (frameLabels) {
+                let outputFramelabel: FrameLabel = null;
+                for (let i = 0; i < frameLabels.length; i++) {
+                    outputFramelabel = frameLabels[i];
+                    if (labelName == outputFramelabel.name) {
+                        return outputFramelabel.end - outputFramelabel.frame + 1;
+                    }
+                }
+            }
+            return -1;
+        }
+
+        /**
+         * add by chenyingpeng
+         * @public
+         * 返回当前Label帧数
+         * @param labelName {string} 帧标签名
+         */
+        public getCurFrmCount(): number {
+            return this.$frameLabelEnd - this.$frameLabelStart + 1;
+        }
+
+        /**
          * @private
          * 返回指定序号的帧的FrameLabel对象
          * @param frame {number} 帧序号
