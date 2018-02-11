@@ -216,6 +216,10 @@ declare namespace egret {
          * @language zh_CN
          */
         dispatchEventWith(type: string, bubbles?: boolean, data?: any, cancelable?: boolean): boolean;
+        /**
+         * add by chenyingpeng
+         */
+        clearEventListener(): void;
     }
 }
 declare namespace egret.sys {

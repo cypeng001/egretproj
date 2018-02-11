@@ -392,6 +392,15 @@ var egret;
             }
             return true;
         };
+        /**
+         * add by chenyingpeng
+         */
+        EventDispatcher.prototype.clearEventListener = function () {
+            var values = this.$EventDispatcher;
+            values[2 /* captureEventsMap */] = {};
+            values[1 /* eventsMap */] = {};
+            values[3 /* notifyLevel */] = 0;
+        };
         return EventDispatcher;
     }(egret.HashObject));
     egret.EventDispatcher = EventDispatcher;

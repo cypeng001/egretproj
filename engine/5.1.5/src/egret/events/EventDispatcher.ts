@@ -321,6 +321,16 @@ namespace egret {
             }
             return true;
         }
+
+        /**
+         * add by chenyingpeng
+         */
+        public clearEventListener():void {
+            let values = this.$EventDispatcher;
+            values[Keys.captureEventsMap] = {};
+            values[Keys.eventsMap] = {};
+            values[Keys.notifyLevel] = 0;
+        }
     }
 
 }
