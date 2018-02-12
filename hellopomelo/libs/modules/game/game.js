@@ -700,6 +700,7 @@ var egret;
          *
          * @param value
          */
+        //private setTexture(value:Texture):void {  //edit by chenyingpeng
         MovieClipDataFactory.prototype.setTexture = function (value) {
             this.$spriteSheet = value ? new egret.SpriteSheet(value) : null;
         };
@@ -3178,6 +3179,34 @@ var egret;
                     }
                 }
             }
+        };
+        /**
+         * add by chenyingpeng
+         * @public
+         * 根据帧标签，返回帧数
+         * @param labelName {string} 帧标签名
+         */
+        MovieClip.prototype.getFrameCount = function (labelName) {
+            var frameLabels = this.frameLabels;
+            if (frameLabels) {
+                var outputFramelabel = null;
+                for (var i = 0; i < frameLabels.length; i++) {
+                    outputFramelabel = frameLabels[i];
+                    if (labelName == outputFramelabel.name) {
+                        return outputFramelabel.end - outputFramelabel.frame + 1;
+                    }
+                }
+            }
+            return -1;
+        };
+        /**
+         * add by chenyingpeng
+         * @public
+         * 返回当前Label帧数
+         * @param labelName {string} 帧标签名
+         */
+        MovieClip.prototype.getCurFrmCount = function () {
+            return this.$frameLabelEnd - this.$frameLabelStart + 1;
         };
         /**
          * @private

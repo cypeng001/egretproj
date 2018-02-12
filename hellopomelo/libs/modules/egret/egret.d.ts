@@ -216,6 +216,10 @@ declare namespace egret {
          * @language zh_CN
          */
         dispatchEventWith(type: string, bubbles?: boolean, data?: any, cancelable?: boolean): boolean;
+        /**
+         * add by chenyingpeng
+         */
+        clearEventListener(): void;
     }
 }
 declare namespace egret.sys {
@@ -504,7 +508,7 @@ declare namespace egret {
          * @private
          * 设置x坐标
          */
-        $setX(value: number): boolean;
+        protected $setX(value: number): boolean;
         $y: number;
         /**
          * Indicates the y coordinate of the DisplayObject instance relative to the local coordinates of the parent
@@ -537,7 +541,7 @@ declare namespace egret {
          * @private
          * 设置y坐标
          */
-        $setY(value: number): boolean;
+        protected $setY(value: number): boolean;
         private $scaleX;
         /**
          * Indicates the horizontal scale (percentage) of the object as applied from the registration point. <br/>
@@ -1240,6 +1244,20 @@ declare namespace egret {
          * @platform Web,Native
          */
         willTrigger(type: string): boolean;
+        $zorder: number;
+        zorder: number;
+        /**
+         * @protected
+         * 获取ZOrder深度值
+         * add by chenyingpeng
+         */
+        $getZOrder(): number;
+        /**
+         * @protected
+         * 设置ZOrder深度值
+         * add by chenyingpeng
+         */
+        protected $setZOrder(value: number): boolean;
     }
 }
 declare namespace egret {
@@ -1668,6 +1686,24 @@ declare namespace egret {
          * @private
          */
         $hitTest(stageX: number, stageY: number): DisplayObject;
+        /**
+         * @private
+         * ZOrder深度值排序标志
+         * add by chenyingpeng
+         */
+        $sortChildrenDirty: boolean;
+        /**
+         * @public
+         * 设置ZOrder深度值排序标志
+         * add by chenyingpeng
+         */
+        sortChildrenDirty(): void;
+        /**
+         * @protected
+         * 根据ZOrder深度值排序
+         * add by chenyingpeng
+         */
+        protected sortChildren(): void;
     }
 }
 declare namespace egret {
@@ -3858,6 +3894,13 @@ declare namespace egret_native {
     let getJsCustomFilterUniforms: (key: any) => any;
 }
 declare namespace egret_native {
+    class NativeRenderSurface {
+        width: number;
+        height: number;
+        $nrRenderTextureId: number;
+        constructor(buffer: any, w: number, h: number, root: boolean);
+        resize(width: number, height: number): void;
+    }
     /**
      * @private
      */
@@ -4178,6 +4221,7 @@ declare namespace egret {
         static $removeDisplayObject(displayObject: DisplayObject, bitmapData: BitmapData): void;
         static $invalidate(bitmapData: BitmapData): void;
         static $dispose(bitmapData: BitmapData): void;
+        static $getUnusedList(): Array<number>;
     }
 }
 declare namespace egret {
@@ -10387,14 +10431,12 @@ declare namespace egret {
         /**
          * Running on Web
          * @version Egret 2.4
-         * @deprecated
          * @platform Web,Native
          * @language en_US
          */
         /**
          * 运行在Web上
          * @version Egret 2.4
-         * @deprecated
          * @platform Web,Native
          * @language zh_CN
          */
@@ -10414,6 +10456,32 @@ declare namespace egret {
          * @language zh_CN
          */
         const NATIVE = "native";
+        /**
+         * Running on Runtime2.0
+         * @version Egret 5.1.5
+         * @platform Web,Native
+         * @language en_US
+         */
+        /**
+         * 运行在Runtime2.0上
+         * @version Egret 5.1.5
+         * @platform Web,Native
+         * @language zh_CN
+         */
+        const RUNTIME2 = "runtime2";
+        /**
+         * Running on WeChat mini game
+         * @version Egret 5.1.5
+         * @platform All
+         * @language en_US
+         */
+        /**
+         * 运行在微信小游戏上
+         * @version Egret 5.1.5
+         * @platform All
+         * @language zh_CN
+         */
+        const WXGAME = "wxgame";
     }
     /**
      * The Capabilities class provides properties that describe the system and runtime that are hosting the application.
@@ -10430,10 +10498,6 @@ declare namespace egret {
      * @language zh_CN
      */
     class Capabilities {
-        /**
-         * @private
-         */
-        static $language: string;
         /**
          * Specifies the language code of the system on which the content is running. The language is specified as a lowercase
          * two-letter language code from ISO 639-1. For Chinese, an additional uppercase two-letter country code from ISO 3166
@@ -10467,10 +10531,6 @@ declare namespace egret {
          */
         static readonly language: string;
         /**
-         * @private
-         */
-        static $isMobile: boolean;
-        /**
          * Specifies whether the system is running in a mobile device.(such as a mobile phone or tablet)
          * @version Egret 2.4
          * @platform Web,Native
@@ -10483,10 +10543,6 @@ declare namespace egret {
          * @language zh_CN
          */
         static readonly isMobile: boolean;
-        /**
-         * @private
-         */
-        static $os: string;
         /**
          * Specifies the current operating system. The os property can return the following strings:
          * <ul>
@@ -10517,17 +10573,13 @@ declare namespace egret {
          */
         static readonly os: string;
         /**
-         * @private
-         */
-        static $runtimeType: string;
-        /**
          * It indicates the current type of operation. runtimeType property returns the following string:
          * <ul>
          * <li>Run on Web     egret.RuntimeType.WEB</li>
-         * <li>Run on Native     egret.RuntimeType.NATIVE</li>
+         * <li>Run on Runtime2.0     egret.RuntimeType.RUNTIME2</li>
+         * <li>Run on WeChat mini game     egret.RuntimeType.WXGAME</li>
          * </ul>
          * @version Egret 2.4
-         * @deprecated
          * @platform Web,Native
          * @language en_US
          */
@@ -10535,10 +10587,10 @@ declare namespace egret {
          * 指示当前的运行类型。runtimeType 属性返回下列字符串：
          * <ul>
          * <li>运行在Web上     egret.RuntimeType.WEB</li>
-         * <li>运行在Native上     egret.RuntimeType.NATIVE</li>
+         * <li>运行在Runtime2.0上     egret.RuntimeType.RUNTIME2</li>
+         * <li>运行在微信小游戏上    egret.RuntimeType.WXGAME</li>
          * </ul>
          * @version Egret 2.4
-         * @deprecated
          * @platform Web,Native
          * @language zh_CN
          */
@@ -10573,7 +10625,6 @@ declare namespace egret {
          * @language zh_CN
          */
         static readonly renderMode: string;
-        static $renderMode: string;
         /***
          * Clients border width.
          * The value before the document class initialization is always 0.
@@ -10591,7 +10642,6 @@ declare namespace egret {
          * @language zh_CN
          */
         static readonly boundingClientWidth: number;
-        static $boundingClientWidth: number;
         /***
          * Clients border height.
          * The value before the document class initialization is always 0.
@@ -10609,7 +10659,6 @@ declare namespace egret {
          * @language zh_CN
          */
         static readonly boundingClientHeight: number;
-        static $boundingClientHeight: number;
     }
 }
 declare namespace egret {

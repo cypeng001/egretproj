@@ -411,6 +411,8 @@ var RES;
             this.reporterDic = {};
             this.dispatcherDic = {};
             this.failedList = new Array();
+            this.loadItemErrorDic = {};
+            this.errorDic = {};
             this.loadingCount = 0;
             this.thread = 4;
             this.queueIndex = 0;
@@ -419,7 +421,10 @@ var RES;
             var total = list.length;
             for (var i = 0; i < total; i++) {
                 var resInfo = list[i];
-                resInfo.groupName = groupName;
+                if (!resInfo.groupNames) {
+                    resInfo.groupNames = [];
+                }
+                resInfo.groupNames.push(groupName);
             }
             this.itemListDic[groupName] = list;
             this.groupTotalDic[groupName] = list.length;
@@ -433,7 +438,9 @@ var RES;
             this.dispatcherDic[groupName] = dispatcher;
             var promise = new Promise(function (reslove, reject) {
                 dispatcher.addEventListener("complete", reslove, null);
-                dispatcher.addEventListener("error", reject, null);
+                dispatcher.addEventListener("error", function (e) {
+                    reject(e.data);
+                }, null);
             });
             this.next();
             return promise;
@@ -449,7 +456,10 @@ var RES;
                     .then(function (response) {
                     _this.loadingCount--;
                     RES.host.save(r, response);
-                    var groupName = r.groupName;
+                    var groupName = r.groupNames.shift();
+                    if (r.groupNames.length == 0) {
+                        r.groupNames = undefined;
+                    }
                     var reporter = _this.reporterDic[groupName];
                     _this.numLoadedDic[groupName]++;
                     var current = _this.numLoadedDic[groupName];
@@ -466,19 +476,57 @@ var RES;
                         delete _this.groupErrorDic[groupName];
                         var dispatcher = _this.dispatcherDic[groupName];
                         if (groupError) {
-                            dispatcher.dispatchEventWith("error");
+                            var itemList = _this.loadItemErrorDic[groupName];
+                            delete _this.loadItemErrorDic[groupName];
+                            var error = _this.errorDic[groupName];
+                            delete _this.errorDic[groupName];
+                            dispatcher.dispatchEventWith("error", false, { itemList: itemList, error: error });
                         }
                         else {
                             dispatcher.dispatchEventWith("complete");
                         }
                     }
                     _this.next();
-                }).catch(function () {
+                }).catch(function (error) {
                     _this.loadingCount--;
                     delete RES.host.state[r.name];
                     var times = _this.retryTimesDic[r.name] || 1;
                     if (times > _this.maxRetryTimes) {
                         delete _this.retryTimesDic[r.name];
+                        var groupName = r.groupNames.shift();
+                        if (r.groupNames.length == 0) {
+                            delete r.groupNames;
+                        }
+                        if (!_this.loadItemErrorDic[groupName]) {
+                            _this.loadItemErrorDic[groupName] = [];
+                        }
+                        if (_this.loadItemErrorDic[groupName].indexOf(r) == -1) {
+                            _this.loadItemErrorDic[groupName].push(r);
+                        }
+                        _this.groupErrorDic[groupName] = true;
+                        var reporter = _this.reporterDic[groupName];
+                        _this.numLoadedDic[groupName]++;
+                        var current = _this.numLoadedDic[groupName];
+                        var total = _this.groupTotalDic[groupName];
+                        if (reporter && reporter.onProgress) {
+                            reporter.onProgress(current, total);
+                        }
+                        if (current == total) {
+                            var groupError = _this.groupErrorDic[groupName];
+                            _this.removeGroupName(groupName);
+                            delete _this.groupTotalDic[groupName];
+                            delete _this.numLoadedDic[groupName];
+                            delete _this.itemListDic[groupName];
+                            delete _this.groupErrorDic[groupName];
+                            var itemList = _this.loadItemErrorDic[groupName];
+                            delete _this.loadItemErrorDic[groupName];
+                            var dispatcher = _this.dispatcherDic[groupName];
+                            dispatcher.dispatchEventWith("error", false, { itemList: itemList, error: error });
+                        }
+                        else {
+                            _this.errorDic[groupName] = error;
+                        }
+                        _this.next();
                     }
                     else {
                         _this.retryTimesDic[r.name] = times + 1;
@@ -637,7 +685,10 @@ var RES;
         get resourceConfig() {
             return RES.config;
         },
-        load: function (r, processor) { return RES.queue.loadResource(r, processor); },
+        load: function (r, processorName) {
+            var processor = typeof processorName == 'string' ? RES.processor._map[processorName] : processorName;
+            return RES.queue.loadResource(r, processor);
+        },
         unload: function (r) { return RES.queue.unloadResource(r); },
         save: function (resource, data) {
             RES.host.state[resource.name] = 2;
@@ -809,11 +860,11 @@ var RES;
     var processor;
     (function (processor_1) {
         function isSupport(resource) {
-            return _map[resource.type];
+            return processor_1._map[resource.type];
         }
         processor_1.isSupport = isSupport;
         function map(type, processor) {
-            _map[type] = processor;
+            processor_1._map[type] = processor;
         }
         processor_1.map = map;
         function promisify(loader, resource) {
@@ -955,7 +1006,7 @@ var RES;
                     var text, data;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
-                            case 0: return [4 /*yield*/, host.load(resource, processor_1.TextProcessor)];
+                            case 0: return [4 /*yield*/, host.load(resource, 'text')];
                             case 1:
                                 text = _a.sent();
                                 data = JSON.parse(text);
@@ -974,7 +1025,7 @@ var RES;
                     var text, data;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
-                            case 0: return [4 /*yield*/, host.load(resource, processor_1.TextProcessor)];
+                            case 0: return [4 /*yield*/, host.load(resource, 'text')];
                             case 1:
                                 text = _a.sent();
                                 data = egret.XML.parse(text);
@@ -993,7 +1044,7 @@ var RES;
                     var text, f, require, exports;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
-                            case 0: return [4 /*yield*/, host.load(resource, processor_1.TextProcessor)];
+                            case 0: return [4 /*yield*/, host.load(resource, 'text')];
                             case 1:
                                 text = _a.sent();
                                 f = new Function('require', 'exports', text);
@@ -1020,10 +1071,10 @@ var RES;
                     var data, imagePath, r, texture, frames, spriteSheet, subkey, config, texture;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
-                            case 0: return [4 /*yield*/, host.load(resource, processor_1.JsonProcessor)];
+                            case 0: return [4 /*yield*/, host.load(resource, "json")];
                             case 1:
                                 data = _a.sent();
-                                imagePath = "resource/" + getRelativePath(resource.url, data.file);
+                                imagePath = RES.config.resourceRoot + "/" + getRelativePath(resource.url, data.file);
                                 r = host.resourceConfig.getResource(data.file);
                                 if (!r) {
                                     r = { name: imagePath, url: imagePath, extra: true, type: 'image' };
@@ -1031,8 +1082,10 @@ var RES;
                                 return [4 /*yield*/, host.load(r)];
                             case 2:
                                 texture = _a.sent();
+                                host.save(r, texture); //add by chenyingpeng
                                 frames = data.frames;
                                 spriteSheet = new egret.SpriteSheet(texture);
+                                spriteSheet["$resourceInfo"] = r;
                                 for (subkey in frames) {
                                     config = frames[subkey];
                                     texture = spriteSheet.createTexture(subkey, config.x, config.y, config.w, config.h, config.offX, config.offY, config.sourceW, config.sourceH);
@@ -1045,6 +1098,8 @@ var RES;
                                     //         this.addSubkey(subkey, name);
                                     //     }
                                 }
+                                // todo refactor
+                                //host.save(r, texture);    //del by chenyingpeng
                                 return [2 /*return*/, spriteSheet];
                         }
                     });
@@ -1061,6 +1116,9 @@ var RES;
                 }
             },
             onRemoveStart: function (host, resource) {
+                var sheet = host.get(resource);
+                var r = sheet["$resourceInfo"];
+                host.unload(r);
                 return Promise.resolve();
             }
         };
@@ -1090,7 +1148,7 @@ var RES;
                     var data, config, imageFileName, r, texture, font;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
-                            case 0: return [4 /*yield*/, host.load(resource, processor_1.TextProcessor)];
+                            case 0: return [4 /*yield*/, host.load(resource, 'text')];
                             case 1:
                                 data = _a.sent();
                                 try {
@@ -1114,12 +1172,18 @@ var RES;
                             case 2:
                                 texture = _a.sent();
                                 font = new egret.BitmapFont(texture, config);
+                                font["$resourceInfo"] = r;
+                                // todo refactor
+                                host.save(r, texture);
                                 return [2 /*return*/, font];
                         }
                     });
                 });
             },
             onRemoveStart: function (host, resource) {
+                var font = host.get(resource);
+                var r = font["$resourceInfo"];
+                host.unload(r);
                 return Promise.resolve();
             }
         };
@@ -1148,7 +1212,7 @@ var RES;
             onLoadStart: function (host, resource) {
                 var mcData;
                 var imageResource;
-                return host.load(resource, processor_1.JsonProcessor)
+                return host.load(resource, 'json')
                     .then(function (value) {
                     mcData = value;
                     var jsonPath = resource.name;
@@ -1182,7 +1246,7 @@ var RES;
                     var data, key;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
-                            case 0: return [4 /*yield*/, host.load(resource, processor_1.JsonProcessor)];
+                            case 0: return [4 /*yield*/, host.load(resource, 'json')];
                             case 1:
                                 data = _a.sent();
                                 for (key in data) {
@@ -1213,7 +1277,7 @@ var RES;
                     var data, fileSystem;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
-                            case 0: return [4 /*yield*/, host.load(resource, processor_1.CommonJSProcessor)];
+                            case 0: return [4 /*yield*/, host.load(resource, 'commonjs')];
                             case 1:
                                 data = _a.sent();
                                 fileSystem = new RES.NewFileSystem(data.resources);
@@ -1236,7 +1300,7 @@ var RES;
         };
         processor_1.LegacyResourceConfigProcessor = {
             onLoadStart: function (host, resource) {
-                return host.load(resource, processor_1.JsonProcessor).then(function (data) {
+                return host.load(resource, 'json').then(function (data) {
                     var resConfigData = RES.config.config;
                     var fileSystem = resConfigData.fileSystem;
                     if (!fileSystem) {
@@ -1268,6 +1332,7 @@ var RES;
                         if (resource_1.subkeys) {
                             resource_1.subkeys.split(",").forEach(function (subkey) {
                                 alias[subkey] = resource_1.name + "#" + subkey;
+                                alias[resource_1.name + "." + subkey] = resource_1.name + "#" + subkey;
                             });
                             // ResourceConfig.
                         }
@@ -1436,7 +1501,7 @@ var RES;
                     var arraybuffer, width, height, borderWidth, borderHeight, byteArray, list, pvrDataBuffer, i, buffer, dataLength, self, texture;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
-                            case 0: return [4 /*yield*/, host.load(resource, processor_1.BinaryProcessor)];
+                            case 0: return [4 /*yield*/, host.load(resource, 'bin')];
                             case 1:
                                 arraybuffer = _a.sent();
                                 width = 512;
@@ -1483,7 +1548,7 @@ var RES;
                 return Promise.resolve();
             }
         };
-        var _map = {
+        processor_1._map = {
             "image": processor_1.ImageProcessor,
             "json": processor_1.JsonProcessor,
             "text": processor_1.TextProcessor,
@@ -1870,7 +1935,7 @@ var RES;
          */
         ResourceItem.TYPE_SOUND = "sound";
         function convertToResItem(r) {
-            var name = "";
+            var name = r.name;
             if (!RES.config.config) {
                 name = r.url;
             }
@@ -2414,8 +2479,15 @@ var RES;
             return this._loadGroup(name, priority, reporterDelegate).then(function (data) {
                 RES.ResourceEvent.dispatchResourceEvent(_this, RES.ResourceEvent.GROUP_COMPLETE, name);
             }, function (error) {
+                var itemList = error.itemList;
+                var length = itemList.length;
+                for (var i = 0; i < length; i++) {
+                    var item = itemList[i];
+                    delete item.promise;
+                    RES.ResourceEvent.dispatchResourceEvent(_this, RES.ResourceEvent.ITEM_LOAD_ERROR, name, item);
+                }
                 RES.ResourceEvent.dispatchResourceEvent(_this, RES.ResourceEvent.GROUP_LOAD_ERROR, name);
-                return Promise.reject(error);
+                return Promise.reject(error.error);
             });
         };
         Resource.prototype._loadGroup = function (name, priority, reporter) {
@@ -2518,6 +2590,10 @@ var RES;
                 }
             }
             return RES.queue.loadResource(r).then(function (value) {
+                // add by chenyingpeng
+                if (r) {
+                    RES.host.save(r, value);
+                }
                 if (compFunc && r) {
                     compFunc.call(thisObject, value, r.url);
                 }

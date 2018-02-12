@@ -391,7 +391,7 @@ declare namespace egret {
          *
          * @param value
          */
-        private setTexture(value);
+        protected setTexture(value: Texture): void;
     }
 }
 declare namespace egret {
@@ -1652,6 +1652,20 @@ declare namespace egret {
          * @param labelName {string} 帧标签名
          */
         private getFrameStartEnd(labelName);
+        /**
+         * add by chenyingpeng
+         * @public
+         * 根据帧标签，返回帧数
+         * @param labelName {string} 帧标签名
+         */
+        getFrameCount(labelName: string): number;
+        /**
+         * add by chenyingpeng
+         * @public
+         * 返回当前Label帧数
+         * @param labelName {string} 帧标签名
+         */
+        getCurFrmCount(): number;
         /**
          * @private
          * 返回指定序号的帧的FrameLabel对象

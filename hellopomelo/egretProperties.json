@@ -1,49 +1,49 @@
 {
-  "engineVersion": "5.1.3",
-  "compilerVersion": "5.1.3",
-  "template": {},
-  "target": {
-    "current": "web"
-  },
-  "eui": {
-    "exmlRoot": [
-      "resource/eui_skins"
-    ],
-    "themes": [
-      "resource/default.thm.json"
-    ],
-    "exmlPublishPolicy": "commonjs"
-  },
-  "modules": [
-    {
-      "name": "egret"
-    },
-    {
-      "name": "eui"
-    },
-    {
-      "name": "assetsmanager"
-    },
-    {
-      "name": "tween"
-    },
-    {
-      "name": "game"
-    },
-    {
-      "name": "promise"
-    },
-    {
-      "name": "jszip",
-      "path": "../gamelibs/bin/jszip"
-    },
-    {
-      "name": "md5",
-      "path": "../gamelibs/bin/md5"
-    },
-    {
-      "name": "PomeloClient",
-      "path": "../gamelibs/bin/PomeloClient"
-    }
-  ]
+	"engineVersion": "5.1.5",
+	"compilerVersion": "5.1.5",
+	"template": {},
+	"target": {
+		"current": "web"
+	},
+	"eui": {
+		"exmlRoot": [
+			"resource/eui_skins"
+		],
+		"themes": [
+			"resource/default.thm.json"
+		],
+		"exmlPublishPolicy": "commonjs"
+	},
+	"modules": [
+		{
+			"name": "egret"
+		},
+		{
+			"name": "eui"
+		},
+		{
+			"name": "assetsmanager"
+		},
+		{
+			"name": "tween"
+		},
+		{
+			"name": "game"
+		},
+		{
+			"name": "promise"
+		},
+		{
+			"name": "jszip",
+			"path": "../gamelibs/bin/jszip"
+		},
+		{
+			"name": "md5",
+			"path": "../gamelibs/bin/md5"
+		},
+		{
+			"name": "PomeloClient",
+			"path": "../gamelibs/bin/PomeloClient"
+		}
+	]
 }
