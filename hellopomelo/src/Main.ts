@@ -107,6 +107,8 @@ class Main extends eui.UILayer {
         sky.width = stageW;
         sky.height = stageH;
 
+		/*
+
         let topMask = new egret.Shape();
         topMask.graphics.beginFill(0x000000, 0.5);
         topMask.graphics.drawRect(0, 0, stageW, 172);
@@ -158,6 +160,9 @@ class Main extends eui.UILayer {
         button.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonClick, this);
 
         this.testLordOfPomelo();
+		*/
+
+		this.testImg();
     }
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
@@ -316,5 +321,15 @@ class Main extends eui.UILayer {
                 }
             });
         });
+    }
+
+	private testImg(): void {
+        var img = new eui.Image;
+        img.source = "resource/item/1.png";
+        img.x = 100;
+        img.y = 200;
+        img.scaleX = img.scaleY = 2;
+        img.rotation = 30;
+        this.addChild(img);
     }
 }
