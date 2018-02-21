@@ -241,7 +241,8 @@ class Main extends eui.UILayer {
         //this.testPomelo();
         //this.testPhp();
         //this.testLordOfPomelo();
-        this.testBezier();
+        //this.testBezier();
+        this.testParticle();
     }
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
@@ -509,5 +510,15 @@ class Main extends eui.UILayer {
         bezierSpline.init([500, 300, 300, 0, 100, 500]);
         bezierSpline.refresh();
         this.addChild(bezierSpline);
+    }
+
+    private testParticle(): void {
+        var texture = RES.getRes("particle_snow_png");
+        var config = RES.getRes("particle_snow_json");
+        var particleSystem = new particle.GravityParticleSystem(texture, config);
+        particleSystem.x = 100;
+        particleSystem.y = 100;
+        particleSystem.start();
+        this.addChild(particleSystem);
     }
 }

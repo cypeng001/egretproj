@@ -9,6 +9,7 @@
 		"promise/bin/promise.js",
 		"libs/modules/jszip/jszip.js",
 		"libs/modules/md5/md5.js",
+		"libs/modules/particle/particle.js",
 		"libs/modules/PomeloClient/PomeloClient.js",
 		"libs/modules/mylib/mylib.js",
 		"libs/modules/mycombobox/mycombobox.js",
