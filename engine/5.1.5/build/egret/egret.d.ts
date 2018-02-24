@@ -851,6 +851,14 @@ declare namespace egret {
         $setAlpha(value: number): void;
         /**
          * @private
+         */
+        $color: [number, number, number];
+        /**
+         * add by chenyingpeng
+         */
+        setColor(r: number, g: number, b: number): void;
+        /**
+         * @private
          * The default touchEnabled property of DisplayObject
          * @default false
          * @version Egret 2.5

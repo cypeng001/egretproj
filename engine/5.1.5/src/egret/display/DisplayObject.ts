@@ -1194,6 +1194,25 @@ namespace egret {
 
         /**
          * @private
+         */
+        $color: [number, number, number] = null;
+
+        /**
+         * add by chenyingpeng
+         */
+        public setColor(r: number, g: number, b: number) {
+            if(!this.$color) {
+                this.$color = [r, g, b];
+            }
+            else {
+                this.$color[0] = r;
+                this.$color[1] = g;
+                this.$color[2] = b;
+            }
+        }
+
+        /**
+         * @private
          * The default touchEnabled property of DisplayObject
          * @default false
          * @version Egret 2.5

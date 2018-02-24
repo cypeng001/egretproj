@@ -7112,6 +7112,27 @@ var egret;
                         var child = children[i];
                         var offsetX2 = void 0;
                         var offsetY2 = void 0;
+                        /*
+                        edit by chenyingpeng
+                        vertex support rgba
+                        */
+                        var tempRed = void 0;
+                        var tempGreen = void 0;
+                        var tempBlue = void 0;
+                        if (child.$color) {
+                            if (child.$color[0] != 1) {
+                                tempRed = buffer.globalRed;
+                                buffer.globalRed = child.$color[0];
+                            }
+                            if (child.$color[1] != 1) {
+                                tempGreen = buffer.globalGreen;
+                                buffer.globalGreen = child.$color[1];
+                            }
+                            if (child.$color[2] != 1) {
+                                tempBlue = buffer.globalBlue;
+                                buffer.globalBlue = child.$color[2];
+                            }
+                        }
                         var tempAlpha = void 0;
                         if (child.$alpha != 1) {
                             tempAlpha = buffer.globalAlpha;
@@ -7153,6 +7174,19 @@ var egret;
                             default:
                                 drawCalls += this.drawDisplayObject(child, buffer, offsetX2, offsetY2);
                                 break;
+                        }
+                        /*
+                        edit by chenyingpeng
+                        vertex support rgba
+                        */
+                        if (tempRed) {
+                            buffer.globalRed = tempRed;
+                        }
+                        if (tempGreen) {
+                            buffer.globalGreen = tempGreen;
+                        }
+                        if (tempBlue) {
+                            buffer.globalBlue = tempBlue;
                         }
                         if (tempAlpha) {
                             buffer.globalAlpha = tempAlpha;

@@ -572,6 +572,10 @@ var egret;
              * @private
              */
             _this.$alpha = 1;
+            /**
+             * @private
+             */
+            _this.$color = null;
             _this.$touchEnabled = DisplayObject.defaultTouchEnabled;
             /**
              * @private
@@ -1588,6 +1592,19 @@ var egret;
                     maskedObject.$cacheDirty = true;
                     maskedObject.$cacheDirtyUp();
                 }
+            }
+        };
+        /**
+         * add by chenyingpeng
+         */
+        DisplayObject.prototype.setColor = function (r, g, b) {
+            if (!this.$color) {
+                this.$color = [r, g, b];
+            }
+            else {
+                this.$color[0] = r;
+                this.$color[1] = g;
+                this.$color[2] = b;
             }
         };
         Object.defineProperty(DisplayObject.prototype, "touchEnabled", {
