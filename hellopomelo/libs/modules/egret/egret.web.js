@@ -5178,7 +5178,12 @@ var egret;
                 this.size = 2000;
                 this.vertexMaxSize = this.size * 4;
                 this.indicesMaxSize = this.size * 6;
-                this.vertSize = 5;
+                /*
+                edit by chenyingpeng
+                vertex support rgba
+                */
+                //private vertSize: number = 5;
+                this.vertSize = 8;
                 this.vertices = null;
                 this.indices = null;
                 this.indicesForMesh = null;
@@ -5256,6 +5261,9 @@ var egret;
              * 缓存一组顶点
              */
             WebGLVertexArrayObject.prototype.cacheArrays = function (buffer, sourceX, sourceY, sourceWidth, sourceHeight, destX, destY, destWidth, destHeight, textureSourceWidth, textureSourceHeight, meshUVs, meshVertices, meshIndices, rotated) {
+                var red = buffer.globalRed;
+                var green = buffer.globalGreen;
+                var blue = buffer.globalBlue;
                 var alpha = buffer.globalAlpha;
                 //计算出绘制矩阵，之后把矩阵还原回之前的
                 var locWorldTransform = buffer.globalMatrix;
@@ -5295,7 +5303,12 @@ var egret;
                     var i = 0, iD = 0, l = 0;
                     var u = 0, v = 0, x = 0, y = 0;
                     for (i = 0, l = meshUVs.length; i < l; i += 2) {
+                        /*
+                        edit by chenyingpeng
+                        vertex support rgba
                         iD = index + i * 5 / 2;
+                        */
+                        iD = index + i * 8 / 2;
                         x = meshVertices[i];
                         y = meshVertices[i + 1];
                         u = meshUVs[i];
@@ -5312,8 +5325,17 @@ var egret;
                             vertices[iD + 2] = (sourceX + u * sourceWidth) / textureSourceWidth;
                             vertices[iD + 3] = (sourceY + v * sourceHeight) / textureSourceHeight;
                         }
+                        /*
+                        edit by chenyingpeng
+                        vertex support rgba
                         // alpha
                         vertices[iD + 4] = alpha;
+                        */
+                        // rgba
+                        vertices[iD + 4] = alpha;
+                        vertices[iD + 5] = alpha;
+                        vertices[iD + 6] = alpha;
+                        vertices[iD + 7] = alpha;
                     }
                     // 缓存索引数组
                     if (this.hasMesh) {
@@ -5343,7 +5365,13 @@ var egret;
                         // uv
                         vertices[index++] = sourceWidth + sourceX;
                         vertices[index++] = sourceY;
+                        /*
                         // alpha
+                        vertices[index++] = alpha;
+                        */
+                        vertices[index++] = red;
+                        vertices[index++] = green;
+                        vertices[index++] = blue;
                         vertices[index++] = alpha;
                         // xy
                         vertices[index++] = a * w + tx;
@@ -5351,7 +5379,13 @@ var egret;
                         // uv
                         vertices[index++] = sourceWidth + sourceX;
                         vertices[index++] = sourceHeight + sourceY;
+                        /*
                         // alpha
+                        vertices[index++] = alpha;
+                        */
+                        vertices[index++] = red;
+                        vertices[index++] = green;
+                        vertices[index++] = blue;
                         vertices[index++] = alpha;
                         // xy
                         vertices[index++] = a * w + c * h + tx;
@@ -5359,7 +5393,13 @@ var egret;
                         // uv
                         vertices[index++] = sourceX;
                         vertices[index++] = sourceHeight + sourceY;
+                        /*
                         // alpha
+                        vertices[index++] = alpha;
+                        */
+                        vertices[index++] = red;
+                        vertices[index++] = green;
+                        vertices[index++] = blue;
                         vertices[index++] = alpha;
                         // xy
                         vertices[index++] = c * h + tx;
@@ -5367,7 +5407,13 @@ var egret;
                         // uv
                         vertices[index++] = sourceX;
                         vertices[index++] = sourceY;
+                        /*
                         // alpha
+                        vertices[index++] = alpha;
+                        */
+                        vertices[index++] = red;
+                        vertices[index++] = green;
+                        vertices[index++] = blue;
                         vertices[index++] = alpha;
                     }
                     else {
@@ -5379,7 +5425,13 @@ var egret;
                         // uv
                         vertices[index++] = sourceX;
                         vertices[index++] = sourceY;
+                        /*
                         // alpha
+                        vertices[index++] = alpha;
+                        */
+                        vertices[index++] = red;
+                        vertices[index++] = green;
+                        vertices[index++] = blue;
                         vertices[index++] = alpha;
                         // xy
                         vertices[index++] = a * w + tx;
@@ -5387,7 +5439,13 @@ var egret;
                         // uv
                         vertices[index++] = sourceWidth + sourceX;
                         vertices[index++] = sourceY;
+                        /*
                         // alpha
+                        vertices[index++] = alpha;
+                        */
+                        vertices[index++] = red;
+                        vertices[index++] = green;
+                        vertices[index++] = blue;
                         vertices[index++] = alpha;
                         // xy
                         vertices[index++] = a * w + c * h + tx;
@@ -5395,7 +5453,13 @@ var egret;
                         // uv
                         vertices[index++] = sourceWidth + sourceX;
                         vertices[index++] = sourceHeight + sourceY;
+                        /*
                         // alpha
+                        vertices[index++] = alpha;
+                        */
+                        vertices[index++] = red;
+                        vertices[index++] = green;
+                        vertices[index++] = blue;
                         vertices[index++] = alpha;
                         // xy
                         vertices[index++] = c * h + tx;
@@ -5403,7 +5467,13 @@ var egret;
                         // uv
                         vertices[index++] = sourceX;
                         vertices[index++] = sourceHeight + sourceY;
+                        /*
                         // alpha
+                        vertices[index++] = alpha;
+                        */
+                        vertices[index++] = red;
+                        vertices[index++] = green;
+                        vertices[index++] = blue;
                         vertices[index++] = alpha;
                     }
                     // 缓存索引数组
@@ -6242,17 +6312,33 @@ var egret;
                     gl.useProgram(program.id);
                     // 目前所有attribute buffer的绑定方法都是一致的
                     var attribute = program.attributes;
-                    for (var key in attribute) {
+                    /*
+                    edit by chenyingpeng
+                    vertex support rgba
+                    for (let key in attribute) {
                         if (key === "aVertexPosition") {
                             gl.vertexAttribPointer(attribute["aVertexPosition"].location, 2, gl.FLOAT, false, 5 * 4, 0);
                             gl.enableVertexAttribArray(attribute["aVertexPosition"].location);
+                        } else if (key === "aTextureCoord") {
+                            gl.vertexAttribPointer(attribute["aTextureCoord"].location, 2, gl.FLOAT, false, 5 * 4, 2 * 4);
+                            gl.enableVertexAttribArray(attribute["aTextureCoord"].location);
+                        } else if (key === "aColor") {
+                            gl.vertexAttribPointer(attribute["aColor"].location, 1, gl.FLOAT, false, 5 * 4, 4 * 4);
+                            gl.enableVertexAttribArray(attribute["aColor"].location);
+                        }
+                    }
+                    */
+                    for (var key in attribute) {
+                        if (key === "aVertexPosition") {
+                            gl.vertexAttribPointer(attribute["aVertexPosition"].location, 2, gl.FLOAT, false, 8 * 4, 0);
+                            gl.enableVertexAttribArray(attribute["aVertexPosition"].location);
                         }
                         else if (key === "aTextureCoord") {
-                            gl.vertexAttribPointer(attribute["aTextureCoord"].location, 2, gl.FLOAT, false, 5 * 4, 2 * 4);
+                            gl.vertexAttribPointer(attribute["aTextureCoord"].location, 2, gl.FLOAT, false, 8 * 4, 2 * 4);
                             gl.enableVertexAttribArray(attribute["aTextureCoord"].location);
                         }
                         else if (key === "aColor") {
-                            gl.vertexAttribPointer(attribute["aColor"].location, 1, gl.FLOAT, false, 5 * 4, 4 * 4);
+                            gl.vertexAttribPointer(attribute["aColor"].location, 4, gl.FLOAT, false, 8 * 4, 4 * 4);
                             gl.enableVertexAttribArray(attribute["aColor"].location);
                         }
                     }
@@ -6497,6 +6583,13 @@ var egret;
             __extends(WebGLRenderBuffer, _super);
             function WebGLRenderBuffer(width, height, root) {
                 var _this = _super.call(this) || this;
+                /*
+                edit by chenyingpeng
+                vertex support rgba
+                */
+                _this.globalRed = 1;
+                _this.globalGreen = 1;
+                _this.globalBlue = 1;
                 _this.globalAlpha = 1;
                 /**
                  * stencil state
@@ -6720,6 +6813,13 @@ var egret;
                 this.context.disableStencilTest(); // 切换frameBuffer注意要禁用STENCIL_TEST
                 this.context.disableScissorTest();
                 this.setTransform(1, 0, 0, 1, 0, 0);
+                /*
+                edit by chenyingpeng
+                vertex support rgba
+                */
+                this.globalRed = 1;
+                this.globalGreen = 1;
+                this.globalBlue = 1;
                 this.globalAlpha = 1;
                 this.context.setGlobalCompositeOperation("source-over");
                 clear && this.context.clear();
@@ -6742,6 +6842,13 @@ var egret;
                 this.context.disableStencilTest(); // 切换frameBuffer注意要禁用STENCIL_TEST
                 this.context.disableScissorTest();
                 this.setTransform(1, 0, 0, 1, 0, 0);
+                /*
+                edit by chenyingpeng
+                vertex support rgba
+                */
+                this.globalRed = 1;
+                this.globalGreen = 1;
+                this.globalBlue = 1;
                 this.globalAlpha = 1;
                 this.context.setGlobalCompositeOperation("source-over");
                 clear && this.context.clear();
@@ -6828,6 +6935,13 @@ var egret;
                     matrix.d = 1;
                     matrix.tx = 0;
                     matrix.ty = 0;
+                    /*
+                    edit by chenyingpeng
+                    vertex support rgba
+                    */
+                    buffer.globalRed = 1;
+                    buffer.globalGreen = 1;
+                    buffer.globalBlue = 1;
                     buffer.globalAlpha = 1;
                     buffer.$offsetX = 0;
                     buffer.$offsetY = 0;
@@ -8337,7 +8451,12 @@ var egret;
             }
             EgretShaderLib.blur_frag = "precision mediump float;\nuniform vec2 blur;\nuniform sampler2D uSampler;\nvarying vec2 vTextureCoord;\nuniform vec2 uTextureSize;\nvoid main()\n{\n    const int sampleRadius = 5;\n    const int samples = sampleRadius * 2 + 1;\n    vec2 blurUv = blur / uTextureSize;\n    vec4 color = vec4(0, 0, 0, 0);\n    vec2 uv = vec2(0.0, 0.0);\n    blurUv /= float(sampleRadius);\n    for (int i = -sampleRadius; i <= sampleRadius; i++) {\n        uv.x = vTextureCoord.x + float(i) * blurUv.x;\n        uv.y = vTextureCoord.y + float(i) * blurUv.y;\n        color += texture2D(uSampler, uv);\n    }\n    color /= float(samples);\n    gl_FragColor = color;\n}";
             EgretShaderLib.colorTransform_frag = "precision mediump float;\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\nuniform mat4 matrix;\nuniform vec4 colorAdd;\nuniform sampler2D uSampler;\nvoid main(void) {\n    vec4 texColor = texture2D(uSampler, vTextureCoord);\n    if(texColor.a > 0.) {\n        texColor = vec4(texColor.rgb / texColor.a, texColor.a);\n    }\n    vec4 locColor = clamp(texColor * matrix + colorAdd, 0., 1.);\n    gl_FragColor = vColor * vec4(locColor.rgb * locColor.a, locColor.a);\n}";
-            EgretShaderLib.default_vert = "attribute vec2 aVertexPosition;\nattribute vec2 aTextureCoord;\nattribute vec2 aColor;\nuniform vec2 projectionVector;\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\nconst vec2 center = vec2(-1.0, 1.0);\nvoid main(void) {\n   gl_Position = vec4( (aVertexPosition / projectionVector) + center , 0.0, 1.0);\n   vTextureCoord = aTextureCoord;\n   vColor = vec4(aColor.x, aColor.x, aColor.x, aColor.x);\n}";
+            /*
+            edit by chenyingpeng
+            vertex support rgba
+            public static default_vert:string = "attribute vec2 aVertexPosition;\nattribute vec2 aTextureCoord;\nattribute vec2 aColor;\nuniform vec2 projectionVector;\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\nconst vec2 center = vec2(-1.0, 1.0);\nvoid main(void) {\n   gl_Position = vec4( (aVertexPosition / projectionVector) + center , 0.0, 1.0);\n   vTextureCoord = aTextureCoord;\n   vColor = vec4(aColor.x, aColor.x, aColor.x, aColor.x);\n}";
+            */
+            EgretShaderLib.default_vert = "attribute vec2 aVertexPosition;\nattribute vec2 aTextureCoord;\nattribute vec4 aColor;\nuniform vec2 projectionVector;\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\nconst vec2 center = vec2(-1.0, 1.0);\nvoid main(void) {\n   gl_Position = vec4( (aVertexPosition / projectionVector) + center , 0.0, 1.0);\n   vTextureCoord = aTextureCoord;\n   vColor = aColor;\n}";
             EgretShaderLib.glow_frag = "precision mediump float;\nvarying vec2 vTextureCoord;\nuniform sampler2D uSampler;\nuniform float dist;\nuniform float angle;\nuniform vec4 color;\nuniform float alpha;\nuniform float blurX;\nuniform float blurY;\nuniform float strength;\nuniform float inner;\nuniform float knockout;\nuniform float hideObject;\nuniform vec2 uTextureSize;\nfloat random(vec3 scale, float seed)\n{\n    return fract(sin(dot(gl_FragCoord.xyz + seed, scale)) * 43758.5453 + seed);\n}\nvoid main(void) {\n    vec2 px = vec2(1.0 / uTextureSize.x, 1.0 / uTextureSize.y);\n    const float linearSamplingTimes = 7.0;\n    const float circleSamplingTimes = 12.0;\n    vec4 ownColor = texture2D(uSampler, vTextureCoord);\n    vec4 curColor;\n    float totalAlpha = 0.0;\n    float maxTotalAlpha = 0.0;\n    float curDistanceX = 0.0;\n    float curDistanceY = 0.0;\n    float offsetX = dist * cos(angle) * px.x;\n    float offsetY = dist * sin(angle) * px.y;\n    const float PI = 3.14159265358979323846264;\n    float cosAngle;\n    float sinAngle;\n    float offset = PI * 2.0 / circleSamplingTimes * random(vec3(12.9898, 78.233, 151.7182), 0.0);\n    float stepX = blurX * px.x / linearSamplingTimes;\n    float stepY = blurY * px.y / linearSamplingTimes;\n    for (float a = 0.0; a <= PI * 2.0; a += PI * 2.0 / circleSamplingTimes) {\n        cosAngle = cos(a + offset);\n        sinAngle = sin(a + offset);\n        for (float i = 1.0; i <= linearSamplingTimes; i++) {\n            curDistanceX = i * stepX * cosAngle;\n            curDistanceY = i * stepY * sinAngle;\n            \n            curColor = texture2D(uSampler, vec2(vTextureCoord.x + curDistanceX - offsetX, vTextureCoord.y + curDistanceY + offsetY));\n            totalAlpha += (linearSamplingTimes - i) * curColor.a;\n            maxTotalAlpha += (linearSamplingTimes - i);\n        }\n    }\n    ownColor.a = max(ownColor.a, 0.0001);\n    ownColor.rgb = ownColor.rgb / ownColor.a;\n    float outerGlowAlpha = (totalAlpha / maxTotalAlpha) * strength * alpha * (1. - inner) * max(min(hideObject, knockout), 1. - ownColor.a);\n    float innerGlowAlpha = ((maxTotalAlpha - totalAlpha) / maxTotalAlpha) * strength * alpha * inner * ownColor.a;\n    ownColor.a = max(ownColor.a * knockout * (1. - hideObject), 0.0001);\n    vec3 mix1 = mix(ownColor.rgb, color.rgb, innerGlowAlpha / (innerGlowAlpha + ownColor.a));\n    vec3 mix2 = mix(mix1, color.rgb, outerGlowAlpha / (innerGlowAlpha + ownColor.a + outerGlowAlpha));\n    float resultAlpha = min(ownColor.a + outerGlowAlpha + innerGlowAlpha, 1.);\n    gl_FragColor = vec4(mix2 * resultAlpha, resultAlpha);\n}";
             EgretShaderLib.primitive_frag = "precision lowp float;\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\nvoid main(void) {\n    gl_FragColor = vColor;\n}";
             EgretShaderLib.texture_frag = "precision lowp float;\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\nuniform sampler2D uSampler;\nvoid main(void) {\n    gl_FragColor = texture2D(uSampler, vTextureCoord) * vColor;\n}";

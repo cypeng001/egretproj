@@ -102,6 +102,13 @@ namespace egret.web {
             }
         }
 
+        /*
+        edit by chenyingpeng
+        vertex support rgba
+        */
+        public globalRed: number = 1;
+        public globalGreen: number = 1;
+        public globalBlue: number = 1;
         public globalAlpha: number = 1;
         /**
          * stencil state
@@ -295,6 +302,13 @@ namespace egret.web {
             this.context.disableScissorTest();
 
             this.setTransform(1, 0, 0, 1, 0, 0);
+            /*
+            edit by chenyingpeng
+            vertex support rgba
+            */
+            this.globalRed = 1;
+            this.globalGreen = 1;
+            this.globalBlue = 1;
             this.globalAlpha = 1;
             this.context.setGlobalCompositeOperation("source-over");
             clear && this.context.clear();
@@ -322,6 +336,13 @@ namespace egret.web {
             this.context.disableScissorTest();
 
             this.setTransform(1, 0, 0, 1, 0, 0);
+            /*
+            edit by chenyingpeng
+            vertex support rgba
+            */
+            this.globalRed = 1;
+            this.globalGreen = 1;
+            this.globalBlue = 1;
             this.globalAlpha = 1;
             this.context.setGlobalCompositeOperation("source-over");
             clear && this.context.clear();
@@ -426,6 +447,13 @@ namespace egret.web {
                 matrix.d = 1;
                 matrix.tx = 0;
                 matrix.ty = 0;
+                /*
+                edit by chenyingpeng
+                vertex support rgba
+                */
+                buffer.globalRed = 1;
+                buffer.globalGreen = 1;
+                buffer.globalBlue = 1;
                 buffer.globalAlpha = 1;
                 buffer.$offsetX = 0;
                 buffer.$offsetY = 0;

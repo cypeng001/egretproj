@@ -38,7 +38,13 @@ namespace egret.web {
         private size: number = 2000;
         private vertexMaxSize: number = this.size * 4;
         private indicesMaxSize: number = this.size * 6;
-        private vertSize: number = 5;
+
+        /*
+        edit by chenyingpeng
+        vertex support rgba
+        */
+        //private vertSize: number = 5;
+        private vertSize: number = 8;
 
         private vertices: Float32Array = null;
         private indices: Uint16Array = null;
@@ -132,6 +138,9 @@ namespace egret.web {
         public cacheArrays(buffer: WebGLRenderBuffer, sourceX: number, sourceY: number, sourceWidth: number, sourceHeight: number,
             destX: number, destY: number, destWidth: number, destHeight: number, textureSourceWidth: number, textureSourceHeight: number,
             meshUVs?: number[], meshVertices?: number[], meshIndices?: number[], rotated?: boolean): void {
+            let red = buffer.globalRed;
+            let green = buffer.globalGreen;
+            let blue = buffer.globalBlue;
             let alpha = buffer.globalAlpha;
             //计算出绘制矩阵，之后把矩阵还原回之前的
             let locWorldTransform = buffer.globalMatrix;
@@ -176,7 +185,13 @@ namespace egret.web {
                 let i = 0, iD = 0, l = 0;
                 let u = 0, v = 0, x = 0, y = 0;
                 for (i = 0, l = meshUVs.length; i < l; i += 2) {
+                    /*
+                    edit by chenyingpeng
+                    vertex support rgba
                     iD = index + i * 5 / 2;
+                    */
+                    iD = index + i * 8 / 2;
+
                     x = meshVertices[i];
                     y = meshVertices[i + 1];
                     u = meshUVs[i];
@@ -193,8 +208,19 @@ namespace egret.web {
                         vertices[iD + 2] = (sourceX + u * sourceWidth) / textureSourceWidth;
                         vertices[iD + 3] = (sourceY + v * sourceHeight) / textureSourceHeight;
                     }
+
+                    /*
+                    edit by chenyingpeng
+                    vertex support rgba
                     // alpha
                     vertices[iD + 4] = alpha;
+                    */
+
+                    // rgba
+                    vertices[iD + 4] = alpha;
+                    vertices[iD + 5] = alpha;
+                    vertices[iD + 6] = alpha;
+                    vertices[iD + 7] = alpha;
                 }
                 // 缓存索引数组
                 if (this.hasMesh) {
@@ -223,31 +249,62 @@ namespace egret.web {
                     // uv
                     vertices[index++] = sourceWidth + sourceX;
                     vertices[index++] = sourceY;
+
+                    /*
                     // alpha
                     vertices[index++] = alpha;
+                    */
+                    vertices[index++] = red;
+                    vertices[index++] = green;
+                    vertices[index++] = blue;
+                    vertices[index++] = alpha;
+
                     // xy
                     vertices[index++] = a * w + tx;
                     vertices[index++] = b * w + ty;
                     // uv
                     vertices[index++] = sourceWidth + sourceX;
                     vertices[index++] = sourceHeight + sourceY;
+
+                    /*
                     // alpha
                     vertices[index++] = alpha;
+                    */
+                    vertices[index++] = red;
+                    vertices[index++] = green;
+                    vertices[index++] = blue;
+                    vertices[index++] = alpha;
+
                     // xy
                     vertices[index++] = a * w + c * h + tx;
                     vertices[index++] = d * h + b * w + ty;
                     // uv
                     vertices[index++] = sourceX;
                     vertices[index++] = sourceHeight + sourceY;
+
+                    /*
                     // alpha
                     vertices[index++] = alpha;
+                    */
+                    vertices[index++] = red;
+                    vertices[index++] = green;
+                    vertices[index++] = blue;
+                    vertices[index++] = alpha;
+
                     // xy
                     vertices[index++] = c * h + tx;
                     vertices[index++] = d * h + ty;
                     // uv
                     vertices[index++] = sourceX;
                     vertices[index++] = sourceY;
+
+                    /*
                     // alpha
+                    vertices[index++] = alpha;
+                    */
+                    vertices[index++] = red;
+                    vertices[index++] = green;
+                    vertices[index++] = blue;
                     vertices[index++] = alpha;
                 }
                 else {
@@ -259,31 +316,62 @@ namespace egret.web {
                     // uv
                     vertices[index++] = sourceX;
                     vertices[index++] = sourceY;
+
+                    /*
                     // alpha
                     vertices[index++] = alpha;
+                    */
+                    vertices[index++] = red;
+                    vertices[index++] = green;
+                    vertices[index++] = blue;
+                    vertices[index++] = alpha;
+
                     // xy
                     vertices[index++] = a * w + tx;
                     vertices[index++] = b * w + ty;
                     // uv
                     vertices[index++] = sourceWidth + sourceX;
                     vertices[index++] = sourceY;
+
+                    /*
                     // alpha
                     vertices[index++] = alpha;
+                    */
+                    vertices[index++] = red;
+                    vertices[index++] = green;
+                    vertices[index++] = blue;
+                    vertices[index++] = alpha;
+
                     // xy
                     vertices[index++] = a * w + c * h + tx;
                     vertices[index++] = d * h + b * w + ty;
                     // uv
                     vertices[index++] = sourceWidth + sourceX;
                     vertices[index++] = sourceHeight + sourceY;
+
+                    /*
                     // alpha
                     vertices[index++] = alpha;
+                    */
+                    vertices[index++] = red;
+                    vertices[index++] = green;
+                    vertices[index++] = blue;
+                    vertices[index++] = alpha;
+
                     // xy
                     vertices[index++] = c * h + tx;
                     vertices[index++] = d * h + ty;
                     // uv
                     vertices[index++] = sourceX;
                     vertices[index++] = sourceHeight + sourceY;
+
+                    /*
                     // alpha
+                    vertices[index++] = alpha;
+                    */
+                    vertices[index++] = red;
+                    vertices[index++] = green;
+                    vertices[index++] = blue;
                     vertices[index++] = alpha;
                 }
                 // 缓存索引数组
