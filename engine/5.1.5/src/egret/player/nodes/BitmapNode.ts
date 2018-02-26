@@ -70,6 +70,21 @@ namespace egret.sys {
          */
         public alpha: number = NaN;
         /**
+         * add by chenyingpeng
+         * BitmapNode support rgb
+         */
+        public red: number = NaN;
+        /**
+         * add by chenyingpeng
+         * BitmapNode support rgb
+         */
+        public green: number = NaN;
+        /**
+         * add by chenyingpeng
+         * BitmapNode support rgb
+         */
+        public blue: number = NaN;
+        /**
          * 颜色变换滤镜
          */
         public filter: ColorMatrixFilter = null;
@@ -95,6 +110,9 @@ namespace egret.sys {
             this.matrix = null;
             this.blendMode = null;
             this.alpha = NaN;
+            this.red = NaN;
+            this.green = NaN;
+            this.blue = NaN;
             this.filter = null;
         }
 

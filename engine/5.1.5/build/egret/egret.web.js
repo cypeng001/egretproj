@@ -7654,6 +7654,13 @@ var egret;
                 var m = node.matrix;
                 var blendMode = node.blendMode;
                 var alpha = node.alpha;
+                /*
+                add by chenyingpeng
+                BitmapNode support rgb
+                */
+                var red = node.red;
+                var green = node.green;
+                var blue = node.blue;
                 var savedMatrix;
                 var offsetX;
                 var offsetY;
@@ -7680,6 +7687,21 @@ var egret;
                     originAlpha = buffer.globalAlpha;
                     buffer.globalAlpha *= alpha;
                 }
+                /*
+                add by chenyingpeng
+                BitmapNode support rgb
+                */
+                var originRed;
+                var originGreen;
+                var originBlue;
+                if (red == red && green == green && blue == blue) {
+                    originRed = buffer.globalRed;
+                    originGreen = buffer.globalGreen;
+                    originBlue = buffer.globalBlue;
+                    buffer.globalRed = red;
+                    buffer.globalGreen = green;
+                    buffer.globalBlue = blue;
+                }
                 if (node.filter) {
                     buffer.context.$filter = node.filter;
                     while (pos < length) {
@@ -7697,6 +7719,15 @@ var egret;
                 }
                 if (alpha == alpha) {
                     buffer.globalAlpha = originAlpha;
+                }
+                /*
+                add by chenyingpeng
+                BitmapNode support rgb
+                */
+                if (red == red && green == green && blue == blue) {
+                    buffer.globalRed = originRed;
+                    buffer.globalGreen = originGreen;
+                    buffer.globalBlue = originBlue;
                 }
                 if (m) {
                     var matrix = buffer.globalMatrix;

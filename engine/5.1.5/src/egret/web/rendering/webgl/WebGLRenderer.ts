@@ -731,6 +731,15 @@ namespace egret.web {
             let m = node.matrix;
             let blendMode = node.blendMode;
             let alpha = node.alpha;
+
+            /*
+            add by chenyingpeng
+            BitmapNode support rgb
+            */
+            let red = node.red;
+            let green = node.green;
+            let blue = node.blue;
+
             let savedMatrix;
             let offsetX;
             let offsetY;
@@ -757,6 +766,24 @@ namespace egret.web {
                 originAlpha = buffer.globalAlpha;
                 buffer.globalAlpha *= alpha;
             }
+
+            /*
+            add by chenyingpeng
+            BitmapNode support rgb
+            */
+            let originRed: number;
+            let originGreen: number;
+            let originBlue: number;
+            if (red == red && green == green && blue == blue) {
+                originRed = buffer.globalRed;
+                originGreen = buffer.globalGreen;
+                originBlue = buffer.globalBlue;
+
+                buffer.globalRed = red;
+                buffer.globalGreen = green;
+                buffer.globalBlue = blue;
+            }
+
             if (node.filter) {
                 buffer.context.$filter = node.filter;
                 while (pos < length) {
@@ -777,6 +804,17 @@ namespace egret.web {
             if (alpha == alpha) {
                 buffer.globalAlpha = originAlpha;
             }
+
+            /*
+            add by chenyingpeng
+            BitmapNode support rgb
+            */
+            if (red == red && green == green && blue == blue) {
+                buffer.globalRed = originRed;
+                buffer.globalGreen = originGreen;
+                buffer.globalBlue = originBlue;
+            }
+
             if (m) {
                 let matrix = buffer.globalMatrix;
                 matrix.a = savedMatrix.a;
