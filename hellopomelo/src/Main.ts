@@ -342,6 +342,7 @@ class Main extends eui.UILayer {
         img.scaleX = img.scaleY = 2;
         img.rotation = 30;
 
+        /*
         var colorMatrix = [
             0.3,0.6,0,0,0,
             0.3,0.6,0,0,0,
@@ -351,6 +352,9 @@ class Main extends eui.UILayer {
         var colorFlilter = new egret.ColorMatrixFilter(colorMatrix);
 
         img.filters = [colorFlilter];
+        */
+        var colorEnhance = new egret.ColorEnhanceFilter(0.5);
+        img.filters = [colorEnhance];
         
         this.addChild(img);
     }

@@ -87,7 +87,8 @@ namespace egret.sys {
         /**
          * 颜色变换滤镜
          */
-        public filter: ColorMatrixFilter = null;
+        //public filter: ColorMatrixFilter = null;
+        public filter: ColorMatrixFilter | ColorEnhanceFilter = null;   //edit by chenyingpeng
         /**
          * 翻转
          */

@@ -26,88 +26,27 @@
 //  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //////////////////////////////////////////////////////////////////////////////////////
-
 namespace egret {
     /**
-     * @private
-     * @version Egret 2.4
-     * @platform Web,Native
+     * add by chenyingpeng
      */
-    export class Filter extends HashObject {
-        /**
-         * @version Egret 2.4
-         * @platform Web,Native
-         */
-        public type:string = null;
-
-        /**
-         * @private
-         */
-        public $id: number = null;
-
-
-        /**
-         * @private 
-         */
-        public $uniforms:any;
-
-        /**
-         * @private 
-         */
-        protected paddingTop: number = 0;
-        /**
-         * @private 
-         */
-        protected paddingBottom: number = 0;
-        /**
-         * @private 
-         */
-        protected paddingLeft: number = 0;
-        /**
-         * @private 
-         */
-        protected paddingRight: number = 0;
-        
-        /**
-         * @private
-         * @native Render
-         */
-        public $obj: any;
-
-        constructor() {
+    export class ColorEnhanceFilter extends Filter {
+        constructor(enhanceAlpha: number) {
             super();
-            this.$uniforms = {};
-            if (egret.nativeRender) {
-               egret_native.NativeDisplayObject.createFilter(this);
-            }
+            this.type = "colorEnhance";
+            this.$uniforms.enhanceAlpha = enhanceAlpha;
         }
 
-        /**
-         * @private
-         */
-        public $toJson():string {
-            return '';
+        public get enhanceAlpha():number {
+            return this.$uniforms.enhanceAlpha;
         }
 
-        protected updatePadding(): void {
-
+        public set enhanceAlpha(value:number) {
+            this.$uniforms.enhanceAlpha = value;
         }
 
-        public onPropertyChange(): void {
-            let self = this;
-            self.updatePadding();
-            if (egret.nativeRender) {
-                egret_native.NativeDisplayObject.setFilterPadding(self.$id, self.paddingTop, self.paddingBottom, self.paddingLeft, self.paddingRight);
-                egret_native.NativeDisplayObject.setDataToFilter(self);
-            }
-        }
-
-        /*
-        add by chenyingpeng
-        support filter merge render
-        */
         public canMergeRender(): boolean {
-            return false;
+            return true;
         }
     }
 }

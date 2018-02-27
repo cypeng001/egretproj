@@ -277,14 +277,25 @@ namespace egret.web {
                 return drawCalls;
             }
 
-            if (!displayObject.mask && filters.length == 1 && (filters[0].type == "colorTransform" || (filters[0].type === "custom" && (<CustomFilter>filters[0]).padding === 0))) {
+            if (!displayObject.mask && filters.length == 1 
+                && (filters[0].type == "colorTransform" 
+                || filters[0].type == "colorEnhance" //edit by chenyingpeng
+                || (filters[0].type === "custom" && (<CustomFilter>filters[0]).padding === 0))) {
                 let childrenDrawCount = this.getRenderCount(displayObject);
                 if (!displayObject.$children || childrenDrawCount == 1) {
                     if (hasBlendMode) {
                         buffer.context.setGlobalCompositeOperation(compositeOp);
                     }
 
-                    buffer.context.$filter = <ColorMatrixFilter>filters[0];
+                    //edit by chenyingpeng
+                    //buffer.context.$filter = <ColorMatrixFilter>filters[0];
+                    if(filters[0].type == "colorEnhance") {
+                        buffer.context.$filter = <ColorEnhanceFilter>filters[0];
+                    }
+                    else {
+                        buffer.context.$filter = <ColorMatrixFilter>filters[0];
+                    }
+                    
                     if (displayObject.$mask) {
                         drawCalls += this.drawWithClip(displayObject, buffer, offsetX, offsetY);
                     }

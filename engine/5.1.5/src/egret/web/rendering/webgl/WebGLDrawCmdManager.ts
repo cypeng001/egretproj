@@ -83,6 +83,11 @@ namespace egret.web {
          */
         public pushDrawTexture(texture:any, count:number = 2, filter?:any, textureWidth?:number, textureHeight?:number):void {
             if(filter) {
+                /*
+                edit by chenyingpeng
+                support filter merge render
+                */
+                /*
                 // 目前有滤镜的情况下不会合并绘制
                 let data = this.drawData[this.drawDataLen] || {};
                 data.type = DRAWABLE_TYPE.TEXTURE;
@@ -93,6 +98,26 @@ namespace egret.web {
                 data.textureHeight = textureHeight;
                 this.drawData[this.drawDataLen] = data;
                 this.drawDataLen++;
+                */
+
+                if (!filter.canMergeRender() 
+                    || this.drawDataLen == 0 
+                    || this.drawData[this.drawDataLen - 1].type != DRAWABLE_TYPE.TEXTURE 
+                    || texture != this.drawData[this.drawDataLen - 1].texture 
+                    || !this.drawData[this.drawDataLen - 1].filter
+                    || this.drawData[this.drawDataLen - 1].filter.hashCode != filter.hashCode) {
+                    let data = this.drawData[this.drawDataLen] || {};
+                    data.type = DRAWABLE_TYPE.TEXTURE;
+                    data.texture = texture;
+                    data.filter = filter;
+                    data.count = 0;
+                    data.textureWidth = textureWidth;
+                    data.textureHeight = textureHeight;
+                    this.drawData[this.drawDataLen] = data;
+                    this.drawDataLen++;
+                }
+
+                this.drawData[this.drawDataLen - 1].count += count;
             } else {
 
                 if (this.drawDataLen == 0 || this.drawData[this.drawDataLen - 1].type != DRAWABLE_TYPE.TEXTURE || texture != this.drawData[this.drawDataLen - 1].texture || this.drawData[this.drawDataLen - 1].filter) {

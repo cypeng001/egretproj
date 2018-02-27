@@ -735,6 +735,10 @@ namespace egret.web {
                         } else if (filter.type === "glow") {
                             program = EgretWebGLProgram.getProgram(gl, EgretShaderLib.default_vert, EgretShaderLib.glow_frag, "glow");
                         }
+                        //add by chenyingpeng
+                        else if (filter.type === "colorEnhance") {
+                            program = EgretWebGLProgram.getProgram(gl, EgretShaderLib.default_vert, EgretShaderLib.colorEnhance_frag, "colorEnhance");
+                        }
                     } else {
                         program = EgretWebGLProgram.getProgram(gl, EgretShaderLib.default_vert, EgretShaderLib.texture_frag, "texture");
                     }
@@ -988,7 +992,8 @@ namespace egret.web {
         // 记录一个colorTransformFilter
         // 这是一个优化，实现物体在只有一个变色滤镜的情况下，以最简单方式渲染
         // 在$filter有值的情况下，drawImage要注意应用此filter
-        public $filter: ColorMatrixFilter;
+        //public $filter: ColorMatrixFilter;
+        public $filter: ColorMatrixFilter | ColorEnhanceFilter; //edit by chenyingpeng
 
         /**
          * 应用滤镜绘制给定的render target

@@ -1316,6 +1316,7 @@ declare namespace egret {
         $toJson(): string;
         protected updatePadding(): void;
         onPropertyChange(): void;
+        canMerge(): boolean;
     }
 }
 declare namespace egret {
@@ -5980,6 +5981,16 @@ declare namespace egret {
         type: string;
         $uniforms: any;
         blurY: number;
+    }
+}
+declare namespace egret {
+    /**
+     * add by chenyingpeng
+     */
+    class ColorEnhanceFilter extends Filter {
+        constructor(enhanceAlpha: number);
+        enhanceAlpha: number;
+        canMerge(): boolean;
     }
 }
 declare namespace egret {

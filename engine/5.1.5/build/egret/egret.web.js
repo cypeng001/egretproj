@@ -4942,9 +4942,14 @@ var egret;
             WebGLDrawCmdManager.prototype.pushDrawTexture = function (texture, count, filter, textureWidth, textureHeight) {
                 if (count === void 0) { count = 2; }
                 if (filter) {
+                    /*
+                    edit by chenyingpeng
+                    support filter merge render
+                    */
+                    /*
                     // 目前有滤镜的情况下不会合并绘制
-                    var data = this.drawData[this.drawDataLen] || {};
-                    data.type = 0 /* TEXTURE */;
+                    let data = this.drawData[this.drawDataLen] || {};
+                    data.type = DRAWABLE_TYPE.TEXTURE;
                     data.texture = texture;
                     data.filter = filter;
                     data.count = count;
@@ -4952,6 +4957,24 @@ var egret;
                     data.textureHeight = textureHeight;
                     this.drawData[this.drawDataLen] = data;
                     this.drawDataLen++;
+                    */
+                    if (!filter.canMergeRender()
+                        || this.drawDataLen == 0
+                        || this.drawData[this.drawDataLen - 1].type != 0 /* TEXTURE */
+                        || texture != this.drawData[this.drawDataLen - 1].texture
+                        || !this.drawData[this.drawDataLen - 1].filter
+                        || this.drawData[this.drawDataLen - 1].filter.hashCode != filter.hashCode) {
+                        var data = this.drawData[this.drawDataLen] || {};
+                        data.type = 0 /* TEXTURE */;
+                        data.texture = texture;
+                        data.filter = filter;
+                        data.count = 0;
+                        data.textureWidth = textureWidth;
+                        data.textureHeight = textureHeight;
+                        this.drawData[this.drawDataLen] = data;
+                        this.drawDataLen++;
+                    }
+                    this.drawData[this.drawDataLen - 1].count += count;
                 }
                 else {
                     if (this.drawDataLen == 0 || this.drawData[this.drawDataLen - 1].type != 0 /* TEXTURE */ || texture != this.drawData[this.drawDataLen - 1].texture || this.drawData[this.drawDataLen - 1].filter) {
@@ -6232,6 +6255,9 @@ var egret;
                             else if (filter.type === "glow") {
                                 program = web.EgretWebGLProgram.getProgram(gl, web.EgretShaderLib.default_vert, web.EgretShaderLib.glow_frag, "glow");
                             }
+                            else if (filter.type === "colorEnhance") {
+                                program = web.EgretWebGLProgram.getProgram(gl, web.EgretShaderLib.default_vert, web.EgretShaderLib.colorEnhance_frag, "colorEnhance");
+                            }
                         }
                         else {
                             program = web.EgretWebGLProgram.getProgram(gl, web.EgretShaderLib.default_vert, web.EgretShaderLib.texture_frag, "texture");
@@ -7230,13 +7256,23 @@ var egret;
                 if (displayBoundsWidth <= 0 || displayBoundsHeight <= 0) {
                     return drawCalls;
                 }
-                if (!displayObject.mask && filters.length == 1 && (filters[0].type == "colorTransform" || (filters[0].type === "custom" && filters[0].padding === 0))) {
+                if (!displayObject.mask && filters.length == 1
+                    && (filters[0].type == "colorTransform"
+                        || filters[0].type == "colorEnhance" //edit by chenyingpeng
+                        || (filters[0].type === "custom" && filters[0].padding === 0))) {
                     var childrenDrawCount = this.getRenderCount(displayObject);
                     if (!displayObject.$children || childrenDrawCount == 1) {
                         if (hasBlendMode) {
                             buffer.context.setGlobalCompositeOperation(compositeOp);
                         }
-                        buffer.context.$filter = filters[0];
+                        //edit by chenyingpeng
+                        //buffer.context.$filter = <ColorMatrixFilter>filters[0];
+                        if (filters[0].type == "colorEnhance") {
+                            buffer.context.$filter = filters[0];
+                        }
+                        else {
+                            buffer.context.$filter = filters[0];
+                        }
                         if (displayObject.$mask) {
                             drawCalls += this.drawWithClip(displayObject, buffer, offsetX, offsetY);
                         }
@@ -8525,6 +8561,10 @@ var egret;
             EgretShaderLib.glow_frag = "precision mediump float;\nvarying vec2 vTextureCoord;\nuniform sampler2D uSampler;\nuniform float dist;\nuniform float angle;\nuniform vec4 color;\nuniform float alpha;\nuniform float blurX;\nuniform float blurY;\nuniform float strength;\nuniform float inner;\nuniform float knockout;\nuniform float hideObject;\nuniform vec2 uTextureSize;\nfloat random(vec3 scale, float seed)\n{\n    return fract(sin(dot(gl_FragCoord.xyz + seed, scale)) * 43758.5453 + seed);\n}\nvoid main(void) {\n    vec2 px = vec2(1.0 / uTextureSize.x, 1.0 / uTextureSize.y);\n    const float linearSamplingTimes = 7.0;\n    const float circleSamplingTimes = 12.0;\n    vec4 ownColor = texture2D(uSampler, vTextureCoord);\n    vec4 curColor;\n    float totalAlpha = 0.0;\n    float maxTotalAlpha = 0.0;\n    float curDistanceX = 0.0;\n    float curDistanceY = 0.0;\n    float offsetX = dist * cos(angle) * px.x;\n    float offsetY = dist * sin(angle) * px.y;\n    const float PI = 3.14159265358979323846264;\n    float cosAngle;\n    float sinAngle;\n    float offset = PI * 2.0 / circleSamplingTimes * random(vec3(12.9898, 78.233, 151.7182), 0.0);\n    float stepX = blurX * px.x / linearSamplingTimes;\n    float stepY = blurY * px.y / linearSamplingTimes;\n    for (float a = 0.0; a <= PI * 2.0; a += PI * 2.0 / circleSamplingTimes) {\n        cosAngle = cos(a + offset);\n        sinAngle = sin(a + offset);\n        for (float i = 1.0; i <= linearSamplingTimes; i++) {\n            curDistanceX = i * stepX * cosAngle;\n            curDistanceY = i * stepY * sinAngle;\n            \n            curColor = texture2D(uSampler, vec2(vTextureCoord.x + curDistanceX - offsetX, vTextureCoord.y + curDistanceY + offsetY));\n            totalAlpha += (linearSamplingTimes - i) * curColor.a;\n            maxTotalAlpha += (linearSamplingTimes - i);\n        }\n    }\n    ownColor.a = max(ownColor.a, 0.0001);\n    ownColor.rgb = ownColor.rgb / ownColor.a;\n    float outerGlowAlpha = (totalAlpha / maxTotalAlpha) * strength * alpha * (1. - inner) * max(min(hideObject, knockout), 1. - ownColor.a);\n    float innerGlowAlpha = ((maxTotalAlpha - totalAlpha) / maxTotalAlpha) * strength * alpha * inner * ownColor.a;\n    ownColor.a = max(ownColor.a * knockout * (1. - hideObject), 0.0001);\n    vec3 mix1 = mix(ownColor.rgb, color.rgb, innerGlowAlpha / (innerGlowAlpha + ownColor.a));\n    vec3 mix2 = mix(mix1, color.rgb, outerGlowAlpha / (innerGlowAlpha + ownColor.a + outerGlowAlpha));\n    float resultAlpha = min(ownColor.a + outerGlowAlpha + innerGlowAlpha, 1.);\n    gl_FragColor = vec4(mix2 * resultAlpha, resultAlpha);\n}";
             EgretShaderLib.primitive_frag = "precision lowp float;\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\nvoid main(void) {\n    gl_FragColor = vColor;\n}";
             EgretShaderLib.texture_frag = "precision lowp float;\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\nuniform sampler2D uSampler;\nvoid main(void) {\n    gl_FragColor = texture2D(uSampler, vTextureCoord) * vColor;\n}";
+            /*
+            add by chenyingpeng
+            */
+            EgretShaderLib.colorEnhance_frag = "precision lowp float;\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\nuniform sampler2D uSampler;\nuniform float enhanceAlpha;\nvoid main(void) {\n    vec4 texColor = texture2D(uSampler, vTextureCoord) * vColor;\n    gl_FragColor.rgb = texColor.a * texColor.rgb;\n    gl_FragColor.a = texColor.a * enhanceAlpha;\n}";
             return EgretShaderLib;
         }());
         web.EgretShaderLib = EgretShaderLib;
