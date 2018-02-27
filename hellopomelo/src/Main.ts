@@ -162,7 +162,8 @@ class Main extends eui.UILayer {
         this.testLordOfPomelo();
 		*/
 
-		this.testImg();
+		//this.testImg();
+        this.testColorFilter();
     }
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
@@ -330,6 +331,27 @@ class Main extends eui.UILayer {
         img.y = 200;
         img.scaleX = img.scaleY = 2;
         img.rotation = 30;
+        this.addChild(img);
+    }
+
+    private testColorFilter(): void {
+        var img = new eui.Image;
+        img.source = "resource/item/1.png";
+        img.x = 100;
+        img.y = 200;
+        img.scaleX = img.scaleY = 2;
+        img.rotation = 30;
+
+        var colorMatrix = [
+            0.3,0.6,0,0,0,
+            0.3,0.6,0,0,0,
+            0.3,0.6,0,0,0,
+            0,0,0,1,0
+        ];
+        var colorFlilter = new egret.ColorMatrixFilter(colorMatrix);
+
+        img.filters = [colorFlilter];
+        
         this.addChild(img);
     }
 }
