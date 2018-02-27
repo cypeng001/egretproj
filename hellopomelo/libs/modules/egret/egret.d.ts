@@ -9545,6 +9545,21 @@ declare namespace egret.sys {
          */
         alpha: number;
         /**
+         * add by chenyingpeng
+         * BitmapNode support rgb
+         */
+        red: number;
+        /**
+         * add by chenyingpeng
+         * BitmapNode support rgb
+         */
+        green: number;
+        /**
+         * add by chenyingpeng
+         * BitmapNode support rgb
+         */
+        blue: number;
+        /**
          * 颜色变换滤镜
          */
         filter: ColorMatrixFilter;

@@ -14403,6 +14403,21 @@ var egret;
                  */
                 _this.alpha = NaN;
                 /**
+                 * add by chenyingpeng
+                 * BitmapNode support rgb
+                 */
+                _this.red = NaN;
+                /**
+                 * add by chenyingpeng
+                 * BitmapNode support rgb
+                 */
+                _this.green = NaN;
+                /**
+                 * add by chenyingpeng
+                 * BitmapNode support rgb
+                 */
+                _this.blue = NaN;
+                /**
                  * 颜色变换滤镜
                  */
                 _this.filter = null;
@@ -14429,6 +14444,9 @@ var egret;
                 this.matrix = null;
                 this.blendMode = null;
                 this.alpha = NaN;
+                this.red = NaN;
+                this.green = NaN;
+                this.blue = NaN;
                 this.filter = null;
             };
             BitmapNode.$updateTextureData = function (node, image, bitmapX, bitmapY, bitmapWidth, bitmapHeight, offsetX, offsetY, textureWidth, textureHeight, destW, destH, sourceWidth, sourceHeight, fillMode, smoothing) {
