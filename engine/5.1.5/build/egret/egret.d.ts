@@ -9683,8 +9683,17 @@ declare namespace egret.sys {
          * 相对偏移矩阵。
          */
         matrix: egret.Matrix;
+        /**
+         * add by chenyingpeng
+         * GroupNode support blendMode
+         */
+        blendMode: number;
         constructor();
         addNode(node: RenderNode): void;
+        /**
+         * add by chenyingpeng
+         */
+        getNode(index: number): RenderNode;
         /**
          * 覆盖父类方法，不自动清空缓存的绘图数据，改为手动调用clear()方法清空。
          * 这里只是想清空绘制命令，因此不调用super

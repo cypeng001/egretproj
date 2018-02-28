@@ -454,6 +454,13 @@ namespace egret.web {
          * 设置混色
          */
         public setGlobalCompositeOperation(value: string) {
+            //add by chenyingpeng
+            //optimize blend command
+            if(this.lastGlobalCompositeOp == value) {
+                return;
+            }
+            this.lastGlobalCompositeOp = value;
+
             this.drawCmdManager.pushSetBlend(value);
         }
 
@@ -645,6 +652,10 @@ namespace egret.web {
          * 清除颜色缓存
          */
         public clear(): void {
+            //add by chenyingpeng
+            //optimize blend command
+            this.lastGlobalCompositeOp = "";
+
             this.drawCmdManager.pushClearColor();
         }
 
@@ -1097,6 +1108,10 @@ namespace egret.web {
             WebGLRenderContext.blendModesForGL["destination-out"] = [0, 771];
             WebGLRenderContext.blendModesForGL["destination-in"] = [0, 770];
         }
+
+        //add by chenyingpeng
+        //optimize blend command
+        private lastGlobalCompositeOp = "";
     }
 
     WebGLRenderContext.initBlendMode();

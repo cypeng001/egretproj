@@ -14874,11 +14874,22 @@ var egret;
             __extends(GroupNode, _super);
             function GroupNode() {
                 var _this = _super.call(this) || this;
+                /**
+                 * add by chenyingpeng
+                 * GroupNode support blendMode
+                 */
+                _this.blendMode = null;
                 _this.type = 4 /* GroupNode */;
                 return _this;
             }
             GroupNode.prototype.addNode = function (node) {
                 this.drawData.push(node);
+            };
+            /**
+             * add by chenyingpeng
+             */
+            GroupNode.prototype.getNode = function (index) {
+                return this.drawData[index];
             };
             /**
              * 覆盖父类方法，不自动清空缓存的绘图数据，改为手动调用clear()方法清空。

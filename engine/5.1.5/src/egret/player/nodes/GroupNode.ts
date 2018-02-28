@@ -38,6 +38,12 @@ namespace egret.sys {
          * 相对偏移矩阵。
          */
         public matrix: egret.Matrix;
+
+        /**
+         * add by chenyingpeng
+         * GroupNode support blendMode
+         */
+        public blendMode: number = null;
         
         public constructor() {
             super();
@@ -46,6 +52,13 @@ namespace egret.sys {
 
         public addNode(node:RenderNode):void {
             this.drawData.push(node);
+        }
+
+        /**
+         * add by chenyingpeng
+         */
+        public getNode(index: number): RenderNode {
+            return this.drawData[index];
         }
 
         /**

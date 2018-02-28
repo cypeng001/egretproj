@@ -5729,6 +5729,9 @@ var egret;
                 this.contextLost = false;
                 this.$scissorState = false;
                 this.vertSize = 5;
+                //add by chenyingpeng
+                //optimize blend command
+                this.lastGlobalCompositeOp = "";
                 this.surface = createCanvas(width, height);
                 if (egret.nativeRender) {
                     return;
@@ -6026,6 +6029,12 @@ var egret;
              * 设置混色
              */
             WebGLRenderContext.prototype.setGlobalCompositeOperation = function (value) {
+                //add by chenyingpeng
+                //optimize blend command
+                if (this.lastGlobalCompositeOp == value) {
+                    return;
+                }
+                this.lastGlobalCompositeOp = value;
                 this.drawCmdManager.pushSetBlend(value);
             };
             /**
@@ -6177,6 +6186,9 @@ var egret;
              * 清除颜色缓存
              */
             WebGLRenderContext.prototype.clear = function () {
+                //add by chenyingpeng
+                //optimize blend command
+                this.lastGlobalCompositeOp = "";
                 this.drawCmdManager.pushClearColor();
             };
             /**
@@ -7024,7 +7036,8 @@ var egret;
 (function (egret) {
     var web;
     (function (web) {
-        var blendModes = ["source-over", "lighter", "destination-out"];
+        //let blendModes = ["source-over", "lighter", "destination-out"];
+        var blendModes = ["source-over", "lighter", "destination-out", "lighter-in"]; //edit by chenyingpeng
         var defaultCompositeOp = "source-over";
         var BLACK_COLOR = "#000000";
         var CAPS_STYLES = { none: 'butt', square: 'square', round: 'round' };
@@ -8028,6 +8041,14 @@ var egret;
                     buffer.useOffset();
                     buffer.transform(m.a, m.b, m.c, m.d, m.tx, m.ty);
                 }
+                /*
+                add by chenyingpeng
+                GroupNode support blendMode
+                */
+                var blendMode = groupNode.blendMode;
+                if (blendMode) {
+                    buffer.context.setGlobalCompositeOperation(blendModes[blendMode]);
+                }
                 var children = groupNode.drawData;
                 var length = children.length;
                 for (var i = 0; i < length; i++) {
@@ -8045,6 +8066,13 @@ var egret;
                     buffer.$offsetX = offsetX;
                     buffer.$offsetY = offsetY;
                     egret.Matrix.release(savedMatrix);
+                }
+                /*
+                add by chenyingpeng
+                GroupNode support blendMode
+                */
+                if (blendMode) {
+                    buffer.context.setGlobalCompositeOperation(defaultCompositeOp);
                 }
             };
             /**

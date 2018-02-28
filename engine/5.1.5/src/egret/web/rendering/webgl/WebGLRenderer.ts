@@ -29,7 +29,9 @@
 
 namespace egret.web {
 
-    let blendModes = ["source-over", "lighter", "destination-out"];
+    //let blendModes = ["source-over", "lighter", "destination-out"];
+    let blendModes = ["source-over", "lighter", "destination-out", "lighter-in"];   //edit by chenyingpeng
+
     let defaultCompositeOp = "source-over";
     let BLACK_COLOR = "#000000";
     let CAPS_STYLES = { none: 'butt', square: 'square', round: 'round' };
@@ -1105,6 +1107,15 @@ namespace egret.web {
                 buffer.transform(m.a, m.b, m.c, m.d, m.tx, m.ty);
             }
 
+            /*
+            add by chenyingpeng
+            GroupNode support blendMode
+            */
+            let blendMode = groupNode.blendMode;
+            if (blendMode) {
+                buffer.context.setGlobalCompositeOperation(blendModes[blendMode]);
+            }
+
             let children = groupNode.drawData;
             let length = children.length;
             for (let i = 0; i < length; i++) {
@@ -1122,6 +1133,14 @@ namespace egret.web {
                 buffer.$offsetX = offsetX;
                 buffer.$offsetY = offsetY;
                 Matrix.release(savedMatrix);
+            }
+
+            /*
+            add by chenyingpeng
+            GroupNode support blendMode
+            */
+            if (blendMode) {
+                buffer.context.setGlobalCompositeOperation(defaultCompositeOp);
             }
         }
 
