@@ -8592,7 +8592,7 @@ var egret;
             /*
             add by chenyingpeng
             */
-            EgretShaderLib.colorEnhance_frag = "precision lowp float;\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\nuniform sampler2D uSampler;\nuniform float enhanceAlpha;\nvoid main(void) {\n    vec4 texColor = texture2D(uSampler, vTextureCoord) * vColor;\n    gl_FragColor.rgb = texColor.a * texColor.rgb;\n    gl_FragColor.a = texColor.a * enhanceAlpha;\n}";
+            EgretShaderLib.colorEnhance_frag = "precision lowp float;\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\nuniform sampler2D uSampler;\nuniform float enhanceAlpha;\nvoid main(void) {\n    vec4 texColor = texture2D(uSampler, vTextureCoord);\n    if(texColor.a > 0) {\n	texColor.rgb = texColr.rgb * (1 / texColor.a);	//alpha_non_premultiplied\n	texColor.a = texColor.a * enhanceAlpha;\n    }\n    gl_FragColor = texColor * vColor;\n}";
             return EgretShaderLib;
         }());
         web.EgretShaderLib = EgretShaderLib;
