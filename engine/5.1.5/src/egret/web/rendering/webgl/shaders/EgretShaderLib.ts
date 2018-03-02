@@ -20,6 +20,6 @@ export class EgretShaderLib {
     /*
     add by chenyingpeng
     */
-    public static colorEnhance_frag:string = "precision lowp float;\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\nuniform sampler2D uSampler;\nuniform float enhanceAlpha;\nvoid main(void) {\n    vec4 texColor = texture2D(uSampler, vTextureCoord);\n    if(texColor.a > 0) {\n	texColor.rgb = texColr.rgb * (1 / texColor.a);	//alpha_non_premultiplied\n	texColor.a = texColor.a * enhanceAlpha;\n    }\n    gl_FragColor = texColor * vColor;\n}";
+    public static colorEnhance_frag:string = "precision lowp float;\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\nuniform sampler2D uSampler;\nuniform float enhanceAlpha;\nvoid main(void) {\n    vec4 texColor = texture2D(uSampler, vTextureCoord);\n    if(texColor.a > 0.) {\n        texColor = vec4(texColor.rgb / texColor.a, texColor.a);\n    }\n    gl_FragColor = vColor * vec4(texColor.rgb * texColor.a, texColor.a * enhanceAlpha);\n}";
 }
 };
