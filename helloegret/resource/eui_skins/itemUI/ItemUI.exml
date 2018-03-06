@@ -3,6 +3,6 @@
 	<w:Config id="161f970320a" ></w:Config>
 	<e:Image id="iconBg" width="75" height="75" y="4" horizontalCenter="0" source="ui_common1.Gezihuang"/>
 	<e:Image id="icon" width="64" height="64" y="10" horizontalCenter="0" source=""/>
-	<e:Label id="name" text="ItemName" y="80" size="15" width="80" height="20" textAlign="center" horizontalCenter="0" fontFamily="Arial"/>
-	<e:Label id="count" text="999" y="55" size="15" width="36" height="20" textAlign="right" horizontalCenter="10" fontFamily="Arial"/>
+	<e:Label id="nameLabel" text="ItemName" y="80" size="15" width="80" height="20" textAlign="center" horizontalCenter="0" fontFamily="Arial"/>
+	<e:Label id="countLabel" text="999" y="55" size="15" width="36" height="20" textAlign="right" horizontalCenter="10" fontFamily="Arial"/>
 </e:Skin>
