@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ItemUISkin1" width="100" height="100" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" >
+	<w:Config id="161f970320a" ></w:Config>
+	<e:Image id="iconBg" width="75" height="75" y="4" horizontalCenter="0" source="ui_common1.Diqing2"/>
+	<e:Image id="icon" width="64" height="64" y="10" horizontalCenter="0" source=""/>
+	<e:Label id="name" text="ItemName" y="80" size="15" width="80" height="20" textAlign="center" horizontalCenter="0" fontFamily="Arial" textColor="0xff0000"/>
+	<e:Label id="count" text="999" y="55" size="15" width="36" height="20" textAlign="right" horizontalCenter="10" fontFamily="Arial" textColor="0xffff00"/>
+</e:Skin>

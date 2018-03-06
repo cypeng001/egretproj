@@ -54,3 +54,5 @@ declare module skins{
 }
 declare class ItemUISkin extends eui.Skin{
 }
+declare class ItemUISkin1 extends eui.Skin{
+}
