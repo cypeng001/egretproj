@@ -13,7 +13,8 @@
 		"libs/modules/PomeloClient/PomeloClient.js",
 		"libs/modules/mylib/mylib.js",
 		"libs/modules/mycombobox/mycombobox.js",
-		"libs/modules/mytogglepanel/mytogglepanel.js"
+		"libs/modules/mytogglepanel/mytogglepanel.js",
+		"libs/modules/customui/customui.js"
 	],
 	"game": [
 		"bin-debug/AssetAdapter.js",
@@ -22,7 +23,6 @@
 		"bin-debug/LoginUI.js",
 		"bin-debug/Main.js",
 		"bin-debug/ThemeAdapter.js",
-		"bin-debug/customui/ItemUI.js",
 		"bin-debug/utils/PhpUtil.js"
 	]
 }

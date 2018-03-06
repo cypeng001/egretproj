@@ -66,5 +66,10 @@
       "name": "mytogglepanel",
       "path": "../gamelibs/bin/mytogglepanel"
     }
+    ,
+    {
+      "name": "customui",
+      "path": "../gamelibs/bin/customui"
+    }
   ]
 }
