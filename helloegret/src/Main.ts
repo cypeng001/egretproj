@@ -242,7 +242,8 @@ class Main extends eui.UILayer {
         //this.testPhp();
         //this.testLordOfPomelo();
         //this.testBezier();
-        this.testParticle();
+        //this.testParticle();
+        //this.testCustomUI();
     }
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
@@ -289,11 +290,14 @@ class Main extends eui.UILayer {
      * Click the button
      */
     private onButtonClick(e: egret.TouchEvent) {
+        /*
         let panel = new eui.Panel();
         panel.title = "Title";
         panel.horizontalCenter = 0;
         panel.verticalCenter = 0;
         this.addChild(panel);
+        */
+        this.testCustomUI();
     }
 
     private testJSZip(): void {
@@ -520,5 +524,10 @@ class Main extends eui.UILayer {
         particleSystem.y = 100;
         particleSystem.start();
         this.addChild(particleSystem);
+    }
+
+    private testCustomUI(): void {
+        var loginUI = new LoginUI;
+        this.addChild(loginUI);
     }
 }

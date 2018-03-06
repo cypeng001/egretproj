@@ -19,6 +19,7 @@
 		"bin-debug/AssetAdapter.js",
 		"bin-debug/BezierSpline.js",
 		"bin-debug/LoadingUI.js",
+		"bin-debug/LoginUI.js",
 		"bin-debug/Main.js",
 		"bin-debug/ThemeAdapter.js",
 		"bin-debug/customui/ItemUI.js",
