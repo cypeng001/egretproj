@@ -21,6 +21,7 @@
 		"bin-debug/LoadingUI.js",
 		"bin-debug/Main.js",
 		"bin-debug/ThemeAdapter.js",
+		"bin-debug/customui/ItemUI.js",
 		"bin-debug/utils/PhpUtil.js"
 	]
 }

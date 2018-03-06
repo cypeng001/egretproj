@@ -1,4 +1,4 @@
-class ItemUI1 extends eui.Component implements  eui.UIComponent {
+class ItemUI extends eui.Component implements  eui.UIComponent {
 	public constructor() {
 		super();
 	}
