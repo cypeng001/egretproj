@@ -154,6 +154,16 @@
 			"name": "particle_snow_png",
 			"type": "image",
 			"url": "particle/snow.png"
+		},
+        {
+			"url": "ui/main1.json",
+			"type": "sheet",
+			"name": "ui_main1"
+		},
+		{
+			"url": "ui/common1.json",
+			"type": "sheet",
+			"name": "ui_common1"
 		}
 	]
 }
